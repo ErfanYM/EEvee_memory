@@ -207,3 +207,42 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
   .video__play { transition: none; }
   .donate { transition: background-color 150ms linear; }
 }
+
+/* ---- lightbox (DESIGN-SYSTEM section 8) ---- */
+.polaroid.is-lb-origin { visibility: hidden; }
+html.lb-open { overflow: hidden; scrollbar-gutter: stable; }
+dialog.lightbox {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: transparent; color: #fff; overflow: hidden; overscroll-behavior: contain;
+}
+dialog.lightbox:not([open]) { display: none; }
+dialog.lightbox::backdrop { background: transparent; }
+.lightbox__scrim { position: absolute; inset: 0; background: var(--scrim); }
+.lightbox__stage {
+  position: absolute; inset: 0; display: grid; place-items: center; touch-action: pinch-zoom; user-select: none; -webkit-user-select: none;
+  padding: max(48px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+.lightbox__stage picture { display: block; }
+.lightbox__img {
+  display: block; object-fit: contain; border-radius: var(--radius-lightbox); box-shadow: var(--print-float);
+  -webkit-user-drag: none; -webkit-touch-callout: none; will-change: transform;
+}
+.lightbox__btn {
+  position: absolute; width: 48px; height: 48px; margin: 0; padding: 0; border: 0; border-radius: 50%; display: grid; place-items: center;
+  background: rgb(255 255 255 / .92); color: var(--ink); box-shadow: 0 0 0 1px rgb(0 0 0 / .2); cursor: pointer;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.lightbox__btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.lightbox__btn:active { opacity: .8; }
+.lightbox__close { top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); }
+.lightbox__prev, .lightbox__next { top: 50%; margin-top: -24px; opacity: 0; pointer-events: none; }
+.lightbox__prev { left: max(12px, env(safe-area-inset-left)); }
+.lightbox__next { right: max(12px, env(safe-area-inset-right)); }
+.lightbox__prev:focus-visible, .lightbox__next:focus-visible { opacity: 1; }
+.lightbox__btn[aria-disabled="true"] { opacity: .35; cursor: default; }
+.lightbox__prev[aria-disabled="true"]:not(:focus-visible), .lightbox__next[aria-disabled="true"]:not(:focus-visible) { opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .lightbox__prev, .lightbox__next { opacity: 1; pointer-events: auto; }
+  .lightbox__prev[aria-disabled="true"], .lightbox__next[aria-disabled="true"] { opacity: .35; }
+}
+@media (pointer: coarse) { .lightbox__close { width: 52px; height: 52px; } }

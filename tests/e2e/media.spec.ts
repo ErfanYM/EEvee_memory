@@ -17,7 +17,7 @@ test('24 media items, each id once', async ({ page }) => {
 });
 
 test('image loading attributes and alt', async ({ page }) => {
-  const imgs = await page.locator('img').evaluateAll((els) =>
+  const imgs = await page.locator('main img').evaluateAll((els) =>
     els.map((e) => ({
       id: e.closest('[data-media-id]')?.getAttribute('data-media-id'),
       loading: e.getAttribute('loading'),

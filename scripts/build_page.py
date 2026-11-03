@@ -242,6 +242,14 @@ html = f"""<!doctype html>
     </div>
   </section>
 </main>
+<dialog class="lightbox" aria-label="Photo">
+  <div class="lightbox__scrim"></div>
+  <div class="lightbox__stage"><picture><source type="image/avif"><source type="image/webp"><img class="lightbox__img" alt="" draggable="false"></picture></div>
+  <button class="lightbox__btn lightbox__close" type="button" aria-label="Close"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></button>
+  <button class="lightbox__btn lightbox__prev" type="button" aria-label="Previous photo"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4L6.5 10l6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+  <button class="lightbox__btn lightbox__next" type="button" aria-label="Next photo"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+  <p class="lightbox__live sr-only" aria-live="polite"></p>
+</dialog>
 </body>
 </html>
 """
