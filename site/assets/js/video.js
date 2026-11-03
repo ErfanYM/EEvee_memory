@@ -36,8 +36,20 @@ export function initVideos(root = document) {
       }, { threshold: [0, VISIBLE_MIN, 0.5, 1] })
     : null;
 
+  // P1: posters load as a print nears the viewport, so four poster files never compete with the hero for bandwidth.
+  const posterIO = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          posterIO.unobserve(e.target);
+          e.target.poster = e.target.dataset.poster;
+        }
+      }, { rootMargin: '600px 0px' })
+    : null;
+
   for (const v of list) {
     videos.add(v);
+    if (posterIO) posterIO.observe(v); else v.poster = v.dataset.poster;
     const f = fig(v);
     const b = btn(v);
     let timer = 0;
@@ -56,7 +68,7 @@ export function initVideos(root = document) {
       for (const o of videos) if (o !== v && !o.paused) resetToPoster(o);
       if (f.classList.contains('is-error')) { f.classList.remove('is-error'); glyph(v, PLAY_PATH); v.load(); }
       v.setAttribute('controls', '');
-      f.classList.add('is-playing');
+      f.classList.add('is-playing', 'is-buffering'); // E2: spinner replaces the glyph at once; cleared on 'playing'
       const p = v.play();
       // The disc is about to hide; keep keyboard focus on the (controls-bearing) video.
       v.setAttribute('tabindex', '-1');
@@ -76,8 +88,8 @@ export function initVideos(root = document) {
       f.classList.add('is-playing');
     });
     v.addEventListener('waiting', () => { if (!timer && !v.paused) timer = setTimeout(() => f.classList.add('is-buffering'), BUFFER_MS); });
-    for (const ev of ['playing', 'canplay', 'pause', 'seeked']) v.addEventListener(ev, clearBuffer);
-    v.addEventListener('ended', () => { clearBuffer(); resetToPoster(v); });
+    for (const ev of ['playing', 'pause']) v.addEventListener(ev, clearBuffer);
+    v.addEventListener('ended', () => { clearBuffer(); resetToPoster(v); v.load(); }); // E5: load() brings the poster back; a scroll-away pause keeps its place
     // <source> errors do not bubble, so listen in the capture phase.
     v.addEventListener('error', onError, true);
     io?.observe(v);

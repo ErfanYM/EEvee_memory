@@ -10,8 +10,12 @@ export function initReveal() {
   const pending = prints.filter((el) => el.dataset.mediaId !== 'img_8819' && el.getBoundingClientRect().top >= vh);
   if (!pending.length) return;
 
-  const show = (el, step = 0) => {
+  const show = (el, step = 0, instant = false) => {
     if (!el.classList.contains('is-pending')) return;
+    if (instant) { // I4: keyboard focus never waits on, or watches, the settle
+      el.classList.add('is-instant');
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('is-instant')));
+    }
     el.style.setProperty('--i', String(Math.min(step, 3)));
     el.classList.remove('is-pending');
     el.classList.add('is-in');
@@ -21,9 +25,11 @@ export function initReveal() {
 
   pending.forEach((el) => el.classList.add('is-pending'));
   if (!('IntersectionObserver' in window)) { showAll(); return; }
+  let io;
+  pending.forEach((el) => el.addEventListener('focusin', () => { io?.unobserve(el); show(el, 0, true); }));
 
   let delivered = false;
-  const io = new IntersectionObserver((entries) => {
+  io = new IntersectionObserver((entries) => {
     delivered = true;
     let step = 0;
     for (const e of entries) {

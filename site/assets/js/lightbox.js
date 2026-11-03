@@ -5,8 +5,8 @@ const EASE_SHEET = 'cubic-bezier(.32, .72, 0, 1)';
 const EASE_OUT = 'cubic-bezier(.23, 1, .32, 1)';
 const AXIS_LOCK = 8;
 const COMMIT_FRAC = 0.22;
-const COMMIT_VEL = 0.11; // px/ms
-const MIN_COMMIT_PX = 24;
+const COMMIT_VEL = 0.25; // px/ms
+const MIN_COMMIT_PX = 40;
 const DISMISS_PX = 110;
 const FRICTION = 0.35;
 
@@ -18,9 +18,10 @@ function sourcesFor(fig) {
   const pic = fig.querySelector('picture');
   const out = { sources: [], jpg: null };
   for (const s of pic.querySelectorAll('source')) {
-    out.sources.push({ type: s.getAttribute('type'), list: parseSrcset(s.getAttribute('srcset')) });
+    out.sources.push({ type: s.getAttribute('type'), list: parseSrcset(s.getAttribute('srcset') || s.dataset.srcset) });
   }
-  out.jpg = parseSrcset(pic.querySelector('img').getAttribute('srcset'));
+  const im = pic.querySelector('img');
+  out.jpg = parseSrcset(im.getAttribute('srcset') || im.dataset.srcset);
   return out;
 }
 function pick(list, want) {
@@ -113,16 +114,27 @@ export function initLightbox(root = document) {
     }
   }
 
-  // Show photo i: 960w first, 1600w once decoded.
+  // E1: show the origin print's already-loaded file at once, so opening never waits on the network.
+  function seedFromOrigin(i) {
+    const o = figs[i].querySelector('.polaroid__open img');
+    pic.querySelectorAll('source').forEach((el) => el.removeAttribute('srcset'));
+    img.removeAttribute('srcset');
+    img.src = o.currentSrc || data[i].jpg[0].url; // print not loaded yet (arrow-key reach): smallest file
+  }
+
+  // Upgrade photo i in place: 960w once decoded, then 1600w once decoded. Each is loaded off-screen and swapped in.
   async function render(i) {
     const my = ++token;
     idx = i;
     updateChrome();
     setOrigin(i);
     fit(i);
-    applySrc(pic, data[i], 'lo');
-    await decode(img);
+    const loPic = document.createElement('picture');
+    loPic.append(...data[i].sources.map((s) => { const e = document.createElement('source'); e.setAttribute('type', s.type); return e; }), document.createElement('img'));
+    const lo = applySrc(loPic, data[i], 'lo');
+    await decode(lo);
     if (my !== token) return;
+    if (lo.currentSrc && lo.currentSrc !== img.currentSrc) applySrc(pic, data[i], 'lo');
     preloadNeighbours();
     const hiPic = document.createElement('picture');
     hiPic.append(...data[i].sources.map((s) => { const e = document.createElement('source'); e.setAttribute('type', s.type); return e; }), document.createElement('img'));
@@ -158,19 +170,15 @@ export function initLightbox(root = document) {
     try { history.pushState({ lb: figs[i].dataset.mediaId }, ''); } catch { /* sandboxed */ }
     html.classList.add('lb-open');
     scrim.style.opacity = '0';
-    img.style.visibility = 'hidden';
     dlg.showModal();
     closeBtn.focus({ preventScroll: true });
     idx = i;
     updateChrome();
     fit(i);
-    const my = ++token;
-    applySrc(pic, data[i], 'lo');
-    await decode(img);
-    if (my !== token || !isOpen) return;
-    fit(i);
+    ++token;
+    img.style.opacity = '';
+    seedFromOrigin(i);
     setOrigin(i);
-    img.style.visibility = '';
     if (reduce()) {
       track(scrim.animate({ opacity: [0, 1] }, { duration: 120, easing: 'linear' })).onfinish = () => { scrim.style.opacity = ''; };
       track(img.animate({ opacity: [0, 1] }, { duration: 120, easing: 'linear' }));
@@ -243,6 +251,7 @@ export function initLightbox(root = document) {
   window.addEventListener('popstate', () => {
     backPending = false;
     if (isOpen) { const a = !instantClose; instantClose = false; close(a); }
+    else if (history.state && history.state.lb) history.replaceState(null, ''); // E6: no dead forward entry
   });
 
   // Keyboard-style change: instant, never animated.
@@ -251,7 +260,9 @@ export function initLightbox(root = document) {
     if (n < 0 || n >= total || closing) return;
     cancelAnims();
     img.style.transform = '';
+    img.style.opacity = '';
     busy = false;
+    seedFromOrigin(n);
     render(n);
     try { history.replaceState({ lb: idOf(n) }, ''); } catch { /* sandboxed */ }
   }
@@ -370,7 +381,8 @@ export function initLightbox(root = document) {
       decode(img).then(() => {
         if (my !== token) return;
         busy = false;
-        if (!reduce()) track(img.animate({ transform: [`translate3d(${dir * 48}px, 0, 0)`, 'none'], opacity: [0, 1] }, { duration: 220, easing: EASE_OUT }));
+        if (!reduce()) track(img.animate({ transform: [`translate3d(${dir * 48}px, 0, 0)`, 'none'], opacity: [0, 1] }, { duration: 220, easing: EASE_OUT, fill: 'backwards' }));
+        img.style.opacity = ''; // E3: the entrance animation now owns opacity, so no frame shows the new photo early
         token = my - 1; // let render() claim a fresh token
         render(n);
       });
@@ -381,6 +393,6 @@ export function initLightbox(root = document) {
     const from = getComputedStyle(img).transform;
     img.style.transform = '';
     const a = track(img.animate({ transform: [from, `translate3d(${-dir * W}px, 0, 0)`], opacity: [1, 0] }, { duration: 140, easing: EASE_OUT, fill: 'forwards' }));
-    a.onfinish = () => { a.cancel(); swap(); };
+    a.onfinish = () => { img.style.opacity = '0'; a.cancel(); swap(); }; // E3: hold opacity 0 across the cancel
   }
 }

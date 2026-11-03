@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate site/index.html and site/assets/css/spreads.css (static, no-JS-needed markup).
+"""Generate site/index.html and the spread-placement block of site/assets/css/main.css (static, no-JS-needed markup).
 
 Inputs: site/assets/media.json, tests/fixtures/copy.json, and the layout table below
 (DESIGN-SYSTEM.md section 6). Run: python3 scripts/build_page.py
@@ -22,47 +22,63 @@ DESC = "Eevee was the sweetest girl who brought us 12 years of happiness."  # th
 OG_ALT = "Eevee smiling in the snowy woods"
 
 # Per print: tilt, tape colour, lead flag, then placements per breakpoint:
-# ph (<=480, 20-col grid), tb (481-1023, 24-col), dt (>=1024, 24-col): (column, row, extra css)
+# ph (<=480, 20-col grid), tb (481-1023, 24-col): (column, row, extra css). dt (>=1024) comes from DT_LAYOUT.
 # Spread order and tilts: DESIGN-SYSTEM section 6.
 SPREADS = [
     ("s1", [
-        ("37c83b77", -3.0, None, False, ("1/12", 1, ""), ("1/12", 1, ""), ("1/8", 1, "margin-top:40px;")),
-        ("img_8394", 1.5, None, True, ("6/21", 2, "margin-top:-22px;"), ("11/25", 1, "margin-top:48px;"), ("8/16", 1, "margin-left:-14px;")),
-        ("img_4837", -1.5, None, False, ("1/12", 3, "margin-top:-22px;"), ("5/16", 2, ""), ("17/24", 1, "margin-top:70px;")),
+        ("37c83b77", -3.0, None, False, ("1/12", 1, ""), ("1/12", 1, "")),
+        ("img_8394", 1.5, None, True, ("6/21", 2, "margin-top:-22px;"), ("11/25", 1, "margin-top:48px;")),
+        ("img_4837", -1.5, None, False, ("1/12", 3, "margin-top:-22px;"), ("5/16", 2, "")),
     ]),
     ("s2", [
-        ("ec73ecaf", -2.5, None, False, ("10/21", 1, ""), ("1/11", 1, ""), ("2/9", 1, "margin-top:50px;")),
-        ("img_7207", 2.0, "sun", True, ("1/16", 2, "margin-top:-22px;"), ("10/24", 1, "margin-top:30px;"), ("9/17", 1, "")),
-        ("img_0826", -1.0, None, False, ("10/21", 3, "margin-top:-22px;"), ("13/24", 2, ""), ("18/25", 1, "margin-top:20px;")),
+        ("ec73ecaf", -2.5, None, False, ("10/21", 1, ""), ("1/11", 1, "")),
+        ("img_7207", 2.0, "sun", True, ("1/16", 2, "margin-top:-22px;"), ("10/24", 1, "margin-top:30px;")),
+        ("img_0826", -1.0, None, False, ("10/21", 3, "margin-top:-22px;"), ("13/24", 2, "")),
     ]),
     ("s3", [
-        ("img_2017", 2.5, None, False, ("1/12", 1, ""), ("1/12", 1, ""), ("1/8", 1, "margin-top:90px;")),
-        ("b9e5276c", -1.5, None, True, ("8/21", 2, "margin-top:8px;"), ("13/25", "1/3", ""), ("9/17", 1, "")),
-        ("b0eaddd4", 3.0, "sky", False, ("2/13", 3, "margin-top:8px;"), ("3/14", 2, "margin-top:24px;"), ("18/25", 1, "margin-top:20px;")),
+        ("img_2017", 2.5, None, False, ("1/12", 1, ""), ("1/12", 1, "")),
+        ("b9e5276c", -1.5, None, True, ("8/21", 2, "margin-top:8px;"), ("13/25", "1/3", "")),
+        ("b0eaddd4", 3.0, "sky", False, ("2/13", 3, "margin-top:8px;"), ("3/14", 2, "margin-top:24px;")),
     ]),
     ("s4", [
-        ("img_6802", -2.0, None, False, ("1/11", 1, ""), ("1/10", 1, ""), ("2/8", 1, "")),
-        ("img_5023", 1.5, "grass", False, ("10/21", 1, "margin-top:24px;"), ("11/22", 1, "margin-top:48px;"), ("9/16", 1, "margin-top:50px;")),
-        ("img_4144", -3.0, None, False, ("2/13", 2, "margin-top:-22px;"), ("2/12", 2, ""), ("5/12", 2, "")),
-        ("img_4973", 3.0, None, True, ("6/21", 3, "margin-top:-22px;"), ("11/24", 2, "margin-top:32px;"), ("14/22", 2, "margin-top:40px;")),
+        ("img_6802", -2.0, None, False, ("1/11", 1, ""), ("1/10", 1, "")),
+        ("img_5023", 1.5, "grass", False, ("10/21", 1, "margin-top:24px;"), ("11/22", 1, "margin-top:48px;")),
+        ("img_4144", -3.0, None, False, ("2/13", 2, "margin-top:-22px;"), ("2/12", 2, "")),
+        ("img_4973", 3.0, None, True, ("6/21", 3, "margin-top:-22px;"), ("11/24", 2, "margin-top:32px;")),
     ]),
     ("s5", [
-        ("23983ab7", -2.0, None, False, ("1/14", 1, ""), ("1/10", 1, ""), ("2/8", 1, "margin-top:20px;")),
-        ("232ed04c", 1.5, "sky", True, ("6/21", 2, "margin-top:-22px;"), ("10/25", 1, "align-self:center;"), ("9/17", 1, "margin-top:110px;")),
-        ("0f88d984", 2.0, None, False, ("8/21", 3, "margin-top:8px;"), ("8/17", 2, "margin-top:24px;"), ("18/24", 1, "margin-top:60px;")),
+        ("23983ab7", -2.0, None, False, ("1/14", 1, ""), ("1/10", 1, "")),
+        ("232ed04c", 1.5, "sky", True, ("6/21", 2, "margin-top:-22px;"), ("10/25", 1, "align-self:center;")),
+        ("0f88d984", 2.0, None, False, ("8/21", 3, "margin-top:8px;"), ("8/17", 2, "margin-top:24px;")),
     ]),
     ("s6", [
-        ("img_3785", -2.5, None, False, ("1/12", 1, ""), ("1/13", 1, ""), ("2/9", 1, "")),
-        ("img_3786", 2.0, "sun", False, ("10/21", 1, "margin-top:20px;"), ("13/25", 1, ""), ("9/16", 1, "margin-left:-10px;margin-top:30px;")),
-        ("c1a73628", -1.5, None, False, ("4/17", 2, "margin-top:8px;"), ("2/11", 2, ""), ("18/24", 1, "margin-top:10px;")),
-        ("img_8788", 3.0, None, False, ("9/20", 3, "margin-top:8px;"), ("13/24", 2, "margin-top:40px;"), ("6/13", 2, "")),
+        ("img_3785", -2.5, None, False, ("1/12", 1, ""), ("1/13", 1, "")),
+        ("img_3786", 2.0, "sun", False, ("10/21", 1, "margin-top:20px;"), ("13/25", 1, "")),
+        ("c1a73628", -1.5, None, False, ("4/17", 2, "margin-top:8px;"), ("2/11", 2, "")),
+        ("img_8788", 3.0, None, False, ("9/20", 3, "margin-top:8px;"), ("13/24", 2, "margin-top:40px;")),
     ]),
     ("s7", [
-        ("img_1551", -2.0, "grass", False, ("1/12", 1, ""), ("1/12", 1, ""), ("2/9", 1, "")),
-        ("img_7522", 2.5, None, False, ("10/21", 1, "margin-top:20px;"), ("13/24", 1, "margin-top:40px;"), ("10/17", 1, "margin-top:50px;")),
-        ("20221006", -1.0, None, True, ("3/18", 2, "margin-top:-10px;"), ("6/20", 2, "margin-top:24px;"), ("9/17", 2, "")),
+        ("img_1551", -2.0, "grass", False, ("1/12", 1, ""), ("1/12", 1, "")),
+        ("img_7522", 2.5, None, False, ("10/21", 1, "margin-top:20px;"), ("13/24", 1, "margin-top:40px;")),
+        ("20221006", -1.0, None, True, ("3/18", 2, "margin-top:-10px;"), ("6/20", 2, "margin-top:24px;")),
     ]),
 ]
+# >=1024 (T1): one row per spread. kind "3" = three columns 1fr 1.25fr 1fr (lead in the middle, 1.25x);
+# kind "4" = four across, lead widened to 1.2x by a negative inline margin. Per print: (column, margin-top px).
+DT_LAYOUT = {
+    "s1": ("3", [(1, 32), (2, 0), (3, 56)]),
+    "s2": ("3", [(1, 48), (2, 0), (3, 24)]),
+    "s3": ("3", [(1, 56), (2, 0), (3, 20)]),
+    "s4": ("4", [(1, 28), (2, 8), (3, 32), (4, 0)]),
+    "s5": ("3", [(1, 24), (2, 0), (3, 52)]),
+    "s6": ("4", [(1, 0), (2, 28), (3, 12), (4, 32)]),
+    "s7": ("3", [(1, 36), (3, 52), (2, 0)]),  # 20221006 (lead, last in the DOM) sits in the middle column
+}
+DT_GAP = {"3": 40, "4": 24}
+DT_FR = {"3": [1, 1.25, 1], "4": [1, 1, 1, 1]}
+LEAD4 = 1.2
+PRINT_PAD_DT = 28  # 2 x 14px card padding at >=1024
+WRAP_PX = {"lo": 1200, "hi": 1320}  # --wrap below / above 1600px
 HERO = "img_8819"
 HERO_TILT = -2.5
 
@@ -77,17 +93,24 @@ def srcset(m, ext):
 
 
 def picture(m, sizes, hero=False):
+    """Hero: WebP only, eager, no decoding hint (P1). Others: sources are parked in data-* attributes and
+    released by lazy.js after the load event, so below-the-fold files never compete with the LCP image."""
     s = m["sources"]
     fallback = s["jpg"][1]
-    lazy = 'fetchpriority="high"' if hero else 'loading="lazy" decoding="async"'
     if hero:
-        lazy = 'loading="eager" decoding="async" fetchpriority="high"'
+        return (
+            "<picture>"
+            f'<source type="image/webp" srcset="{srcset(m, "webp")}" sizes="{sizes}">'
+            f'<img src="{fallback}" srcset="{srcset(m, "jpg")}" sizes="{sizes}" '
+            f'width="{m["width"]}" height="{m["height"]}" alt="{escape(m["alt"], quote=True)}" loading="eager" fetchpriority="high" draggable="false">'
+            "</picture>"
+        )
     return (
-        "<picture>"
-        f'<source type="image/avif" srcset="{srcset(m, "avif")}" sizes="{sizes}">'
-        f'<source type="image/webp" srcset="{srcset(m, "webp")}" sizes="{sizes}">'
-        f'<img src="{fallback}" srcset="{srcset(m, "jpg")}" sizes="{sizes}" '
-        f'width="{m["width"]}" height="{m["height"]}" alt="{escape(m["alt"], quote=True)}" {lazy} draggable="false">'
+        '<picture data-lazy>'
+        f'<source type="image/avif" data-srcset="{srcset(m, "avif")}" sizes="{sizes}">'
+        f'<source type="image/webp" data-srcset="{srcset(m, "webp")}" sizes="{sizes}">'
+        f'<img data-src="{fallback}" data-srcset="{srcset(m, "jpg")}" sizes="{sizes}" '
+        f'width="{m["width"]}" height="{m["height"]}" alt="{escape(m["alt"], quote=True)}" loading="lazy" decoding="async" draggable="false">'
         "</picture>"
     )
 
@@ -96,19 +119,40 @@ def fmt(x):
     return f"{x:g}"
 
 
-def sizes_for(ph, tb, dt):
+def dt_sizes(sid, pid):
+    """Rendered <img> width at >=1024: (calc() for 1024-1599, px for >=1600)."""
+    kind, places = DT_LAYOUT[sid]
+    items = dict(SPREADS_BY_ID[sid])
+    order = [it[0] for it in SPREADS_BY_ID_LIST[sid]]
+    col = places[order.index(pid)][0]
+    gap = DT_GAP[kind]
+    fr = DT_FR[kind][col - 1]
+    n = 3 if kind == "3" else 4
+    mult = LEAD4 if (kind == "4" and items[pid]) else 1
+    sumfr = sum(DT_FR[kind])
+    lo = f"calc((min(100vw, {WRAP_PX['lo']}px) - {96 + gap * (n - 1)}px) * {fmt(fr * mult)}/{fmt(sumfr)} - {PRINT_PAD_DT}px)"
+    hi = round((WRAP_PX["hi"] - 96 - gap * (n - 1)) * fr * mult / sumfr - PRINT_PAD_DT)
+    return lo, hi
+
+
+def sizes_for(sid, pid, ph, tb):
+    lo, hi = dt_sizes(sid, pid)
     return (
-        f"(min-width: 1024px) calc(min(100vw - 96px, 1104px) * {span(dt)}/24), "
-        f"(min-width: 481px) calc(min(92vw, 760px) * {span(tb)}/24), "
-        f"calc((100vw - 40px) * {span(ph)}/20)"
+        f"(min-width: 1600px) {hi}px, "
+        f"(min-width: 1024px) {lo}, "
+        f"(min-width: 481px) calc(min(92vw, 760px) * {span(tb)}/24 - 20px), "
+        f"calc((100vw - 40px) * {span(ph)}/20 - 20px)"
     )
 
+
+SPREADS_BY_ID_LIST = {sid: items for sid, items in SPREADS}
+SPREADS_BY_ID = {sid: [(it[0], it[3]) for it in items] for sid, items in SPREADS}
 
 PLAY_SVG = '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>'
 
 
-def figure(item, index, hero=False):
-    pid, tilt, tape, lead, ph, tb, dt = item
+def figure(item, index, sid):
+    pid, tilt, tape, lead, ph, tb = item
     m = media[pid]
     cls = ["polaroid"]
     if m["kind"] == "video":
@@ -122,13 +166,13 @@ def figure(item, index, hero=False):
     if m["kind"] == "video":
         inner = (
             '<div class="polaroid__window">'
-            f'<video preload="none" playsinline width="{m["width"]}" height="{m["height"]}" poster="{m["poster"]}">'
+            f'<video preload="none" playsinline aria-label="Play video: {escape(m["alt"], quote=True)}" width="{m["width"]}" height="{m["height"]}" data-poster="{m["poster"]}">'
             f'<source src="{m["sources"]["mp4"]}" type="video/mp4"></video>'
             f'<button class="video__play" type="button" aria-label="Play video: {escape(m["alt"], quote=True)}">{PLAY_SVG}</button>'
             "</div>"
         )
     else:
-        sz = sizes_for(ph[0], tb[0], dt[0])
+        sz = sizes_for(sid, pid, ph[0], tb[0])
         inner = (
             f'<button class="polaroid__open" type="button" aria-haspopup="dialog" '
             f'aria-label="Open photo: {escape(m["alt"], quote=True)}">{picture(m, sz)}</button>'
@@ -140,7 +184,7 @@ def figure(item, index, hero=False):
 
 
 def spread(sid, items):
-    figs = "\n      ".join(figure(it, i) for i, it in enumerate(items))
+    figs = "\n      ".join(figure(it, i, sid) for i, it in enumerate(items))
     return f'    <div class="spread spread--{sid}" data-count="{len(items)}">\n      {figs}\n    </div>'
 
 
@@ -150,14 +194,19 @@ def p(key, lead=False):
     return f'<p class="copy{" copy--lead" if lead else ""}" data-copy="{key}">{escape(text, quote=False)}</p>'
 
 
-hero_item = (HERO, HERO_TILT, None, False, ("1/2", 1, ""), ("1/2", 1, ""), ("1/2", 1, ""))
 hm = media[HERO]
+# Rendered <img> widths: print width minus 32px card padding (see main.css .hero .polaroid).
+HERO_SIZES = "(min-width: 1440px) 488px, (min-width: 1024px) 438px, calc(min(78vw, 440px) - 32px)"
+HERO_PRELOAD = (
+    f'<link rel="preload" as="image" type="image/webp" fetchpriority="high" imagesrcset="{srcset(hm, "webp")}" '
+    f'imagesizes="{HERO_SIZES}">'
+)
 hero_fig = (
     f'<figure class="polaroid polaroid--hero" data-media-id="{HERO}" data-kind="photo" '
     f'style="--tilt:{fmt(HERO_TILT)}deg;--ar:{hm["width"]}/{hm["height"]};--i:0">'
     f'<div class="polaroid__tilt"><button class="polaroid__open" type="button" aria-haspopup="dialog" '
     f'aria-label="Open photo: {escape(hm["alt"], quote=True)}">'
-    + picture(hm, "(min-width: 1024px) 470px, (min-width: 720px) 45vw, min(78vw, 440px)", hero=True)
+    + picture(hm, HERO_SIZES, hero=True)
     + "</button></div></figure>"
 )
 
@@ -191,8 +240,8 @@ html = f"""<!doctype html>
 <link rel="preload" href="assets/fonts/zilla-slab-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/zilla-slab-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
+{HERO_PRELOAD}
 <link rel="stylesheet" href="assets/css/main.css">
-<link rel="stylesheet" href="assets/css/spreads.css">
 <script type="module" src="assets/js/main.js"></script>
 </head>
 <body>
@@ -262,19 +311,39 @@ html = f"""<!doctype html>
 """
 (SITE / "index.html").write_text(html)
 
-# ---- spreads.css ----
-css = ["/* GENERATED by scripts/build_page.py from the layout table. Do not edit by hand. */"]
-bps = [("ph", None), ("tb", "(min-width: 481px)"), ("dt", "(min-width: 1024px)")]
-for idx, (name, mq) in enumerate(bps):
+# ---- spreads rules, merged into main.css between markers (one stylesheet request) ----
+BEGIN = "/* BEGIN GENERATED SPREADS (scripts/build_page.py, do not edit by hand) */"
+END = "/* END GENERATED SPREADS */"
+css = [BEGIN]
+for idx, (name, mq) in enumerate([("ph", None), ("tb", "(min-width: 481px)")]):
     rules = []
     for sid, items in SPREADS:
         for it in items:
             col, row, extra = it[4 + idx]
-            r = row if isinstance(row, str) else f"{row}"
             sel = f'.polaroid[data-media-id="{it[0]}"]'
-            reset = "margin:0;" if idx else "margin:0;"
-            rules.append(f"{sel}{{grid-column:{col.replace('/', ' / ')};grid-row:{r.replace('/', ' / ')};{reset}{extra}}}")
+            rules.append(f"{sel}{{grid-column:{col.replace('/', ' / ')};grid-row:{str(row).replace('/', ' / ')};margin:0;{extra}}}")
     body = "\n".join(rules)
     css.append(f"@media {mq} {{\n{body}\n}}" if mq else body)
-(SITE / "assets/css/spreads.css").write_text("\n".join(css) + "\n")
+rules = []
+for sid, items in SPREADS:
+    kind, places = DT_LAYOUT[sid]
+    tpl = " ".join(f"{f:g}fr" for f in DT_FR[kind])
+    rules.append(f".spread--{sid}{{grid-template-columns:{tpl};column-gap:{DT_GAP[kind]}px;}}")
+    for it, (col, mt) in zip(items, places):
+        extra = "margin-inline:-10%;" if (kind == "4" and it[3]) else ""
+        rules.append(f'.polaroid[data-media-id="{it[0]}"]{{grid-column:{col};grid-row:1;align-self:start;margin:0;margin-top:{mt}px;{extra}}}')
+css.append("@media (min-width: 1024px) {\n" + "\n".join(rules) + "\n}")
+css.append(END)
+main = SITE / "assets/css/main.css"
+text = main.read_text()
+block = "\n".join(css) + "\n"
+if BEGIN in text:
+    a, b = text.index(BEGIN), text.index(END) + len(END) + 1
+    text = text[:a] + block + text[b:]
+else:
+    text = text.rstrip("\n") + "\n\n" + block
+main.write_text(text)
+legacy = SITE / "assets/css/spreads.css"
+if legacy.exists():
+    legacy.unlink()
 print("ok", len(html))
