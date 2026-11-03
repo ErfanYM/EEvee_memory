@@ -20,7 +20,7 @@ Written by Opus from council rounds 1–2 (`r1-*`, `r2-*`). **This file is bindi
 --berry-deep:   #74203A;  /* donate button hover/active */
 --focus:        #1D4E89;  /* 3px ring, 3px offset, everywhere */
 --tape-sun:     #F4B93A;  --tape-sky: #9CC3DB;  --tape-grass: #B5CC8C;
---scrim:        rgba(36, 24, 16, .94);
+--scrim:        rgba(36, 24, 16, .97);
 --print-edge:   0 1px 2px rgb(43 33 24 / .18);   /* hairline contact shadow, the ONLY resting shadow */
 --print-float:  0 18px 40px -12px rgb(0 0 0 / .45); /* lightbox image only */
 
@@ -163,7 +163,7 @@ Hero `<img>`: `loading="eager" fetchpriority="high"`. Every other img gets `load
 | Lightbox frame | plain image | Emil | Maximum photo size on phone |
 | Lightbox ends | stop with friction | Impeccable + Emil | Finite set, clear |
 | Lightbox touch-action | pinch-zoom | Impeccable | `none` blocked zoom, contradicting Emil's own note |
-| Swipe threshold | 22% or 0.11 px/ms | Emil | Distance-only fails across phone widths |
+| Swipe threshold | 22% or 0.25 px/ms (and at least 40px) | Emil | Distance-only fails across phone widths |
 | Phone spreads | lead print + staggered 2-up, videos single | Taste (Q1) | Avoids both a monotonous column and a catalogue grid |
 | Videos adjacent | never | Impeccable | Prevents mis-taps cutting a clip |
 | Donation field | blush, not berry | Taste withdrew berry; Impeccable | "Quiet invitation" |
@@ -173,3 +173,8 @@ Hero `<img>`: `loading="eager" fetchpriority="high"`. Every other img gets `load
 | Domain size | 15px | Impeccable | Trust cue must be readable |
 | Close button | 48/52px | Impeccable | Platform reach |
 | Run balance | 3/6/7/7, 20221006 to S7 | Taste | Shortest max run; videos never adjacent |
+
+## Round 1 build notes (fix-1)
+- One stylesheet: spread placements are generated into the marked block at the end of `main.css`.
+- Hero: WebP-only `<picture>` with a matching `<link rel=preload as=image>`, extra 560w tier, no `decoding` hint. Below-the-fold pictures keep their URLs in `data-*` and `lazy.js` releases them (on-screen prints at once, the rest after `load`). Video posters load the same way.
+- Lightbox opens from the origin print's `currentSrc`, then upgrades to 960w and 1600w after decode.
