@@ -93,8 +93,8 @@ def srcset(m, ext):
 
 
 def picture(m, sizes, hero=False):
-    """Hero: WebP only, eager, no decoding hint (P1). Others: sources are parked in data-* attributes and
-    released by lazy.js after the load event, so below-the-fold files never compete with the LCP image."""
+    """Hero: WebP only, eager, high priority, no decoding hint (P1). Others: real srcset/src in the markup (works
+    without JS), native lazy loading at low priority so they never compete with the LCP image (R13)."""
     s = m["sources"]
     fallback = s["jpg"][1]
     if hero:
@@ -106,11 +106,11 @@ def picture(m, sizes, hero=False):
             "</picture>"
         )
     return (
-        '<picture data-lazy>'
-        f'<source type="image/avif" data-srcset="{srcset(m, "avif")}" sizes="{sizes}">'
-        f'<source type="image/webp" data-srcset="{srcset(m, "webp")}" sizes="{sizes}">'
-        f'<img data-src="{fallback}" data-srcset="{srcset(m, "jpg")}" sizes="{sizes}" '
-        f'width="{m["width"]}" height="{m["height"]}" alt="{escape(m["alt"], quote=True)}" loading="lazy" decoding="async" draggable="false">'
+        "<picture>"
+        f'<source type="image/avif" srcset="{srcset(m, "avif")}" sizes="{sizes}">'
+        f'<source type="image/webp" srcset="{srcset(m, "webp")}" sizes="{sizes}">'
+        f'<img src="{fallback}" srcset="{srcset(m, "jpg")}" sizes="{sizes}" '
+        f'width="{m["width"]}" height="{m["height"]}" alt="{escape(m["alt"], quote=True)}" loading="lazy" decoding="async" fetchpriority="low" draggable="false">'
         "</picture>"
     )
 
@@ -168,6 +168,7 @@ def figure(item, index, sid):
             '<div class="polaroid__window">'
             f'<video preload="none" playsinline aria-label="Play video: {escape(m["alt"], quote=True)}" width="{m["width"]}" height="{m["height"]}" data-poster="{m["poster"]}">'
             f'<source src="{m["sources"]["mp4"]}" type="video/mp4"></video>'
+            f'<noscript><img class="video__poster-fallback" src="{m["poster"]}" alt="" width="{m["width"]}" height="{m["height"]}"></noscript>'
             f'<button class="video__play" type="button" aria-label="Play video: {escape(m["alt"], quote=True)}">{PLAY_SVG}</button>'
             "</div>"
         )

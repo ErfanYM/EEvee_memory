@@ -317,3 +317,26 @@ test.describe('E video', () => {
     expect(await vid(page, 0).evaluate((v: HTMLVideoElement) => v.ended)).toBe(false);
   });
 });
+
+test.describe('R13 no-JS', () => {
+  test.use({ javaScriptEnabled: false });
+  test('R13: with JS off every photo loads and every video figure shows its poster', async ({ page, browserName }) => {
+    test.skip(browserName !== 'chromium', 'chromium only');
+    await page.goto('/');
+    const h = await page.evaluate(() => document.documentElement.scrollHeight).catch(() => 0);
+    const imgs = page.locator('.polaroid[data-kind="photo"] img');
+    expect(await imgs.count()).toBe(20);
+    for (let i = 0; i < 20; i++) {
+      await imgs.nth(i).scrollIntoViewIfNeeded();
+      await expect.poll(() => imgs.nth(i).evaluate((e: HTMLImageElement) => e.naturalWidth), { timeout: 8000 }).toBeGreaterThan(0);
+    }
+    const posters = page.locator('.polaroid--video .video__poster-fallback');
+    expect(await posters.count()).toBe(4);
+    for (let i = 0; i < 4; i++) {
+      await posters.nth(i).scrollIntoViewIfNeeded();
+      await expect.poll(() => posters.nth(i).evaluate((e: HTMLImageElement) => e.naturalWidth), { timeout: 8000 }).toBeGreaterThan(0);
+      expect(await posters.nth(i).isVisible()).toBe(true);
+    }
+    void h;
+  });
+});
