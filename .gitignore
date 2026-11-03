@@ -1,0 +1,8 @@
+*.HEIC
+*.MOV
+/*.JPEG
+.superpowers/
+node_modules/
+test-results/
+playwright-report/
+__pycache__/
