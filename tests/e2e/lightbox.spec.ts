@@ -190,6 +190,30 @@ test('reduced motion: opens and closes without error', async ({ page }) => {
   await expect(dlg(page)).toBeHidden();
 });
 
+test('rapid double close does not pop past the page', async ({ page }) => {
+  const url = page.url();
+  const len = await page.evaluate(() => history.length);
+  await openPhoto(page, 2);
+  await page.keyboard.press('Escape');
+  await page.keyboard.press('Escape');
+  await expect(dlg(page)).toBeHidden();
+  await page.waitForTimeout(400);
+  expect(page.url()).toBe(url);
+  expect(await page.evaluate(() => history.length)).toBe(len + 1);
+  expect(await page.evaluate(() => history.state?.lb ?? null)).toBeNull();
+  await expect(page.locator('.polaroid').first()).toBeAttached(); // still on the page
+});
+
+test('double click on X does not pop past the page', async ({ page }) => {
+  const url = page.url();
+  await openPhoto(page, 2);
+  await page.evaluate(() => { const b = document.querySelector('.lightbox__close') as HTMLElement; b.click(); b.click(); });
+  await expect(dlg(page)).toBeHidden();
+  await page.waitForTimeout(400);
+  expect(page.url()).toBe(url);
+  expect(await page.evaluate(() => history.state?.lb ?? null)).toBeNull();
+});
+
 // ---- touch ----
 async function drag(page: Page, from: [number, number], to: [number, number], ms = 120, id = 7) {
   await page.evaluate(async ({ from, to, ms, id }) => {
@@ -252,5 +276,53 @@ test.describe('swipe', () => {
     await page.waitForTimeout(450);
     await drag(page, [200, 300], [200, 560], 200);
     await expect(dlg(page)).toBeHidden();
+  });
+
+  test('swipe down: FLIP lands on the print, state cleared', async ({ page }) => {
+    await openPhoto(page, 3);
+    await page.waitForTimeout(450);
+    await drag(page, [200, 300], [200, 560], 200);
+    await expect(dlg(page)).toBeHidden();
+    await expect(photos(page).nth(3)).toHaveCSS('visibility', 'visible');
+    expect(await page.locator('dialog.lightbox .lightbox__img').evaluate((i: HTMLElement) => i.style.transform)).toBe('');
+  });
+
+  test('swipe down close animation ends near the origin print rect', async ({ page }) => {
+    await openPhoto(page, 3);
+    await page.waitForTimeout(450);
+    await page.evaluate(() => {
+      const i = document.querySelector('dialog.lightbox .lightbox__img')!;
+      const orig = i.animate.bind(i);
+      (window as any).__last = null;
+      i.animate = (k: any, o: any) => { const a = orig(k, o); if (o && o.duration === 220 && o.fill === 'forwards') (window as any).__last = a; return a; };
+    });
+    await drag(page, [200, 300], [200, 560], 200);
+    await expect.poll(() => page.evaluate(() => !!(window as any).__last)).toBe(true);
+    const res = await page.evaluate(async () => {
+      const a = (window as any).__last as Animation;
+      a.pause(); a.currentTime = 220;
+      const i = document.querySelector('dialog.lightbox .lightbox__img')!.getBoundingClientRect();
+      const o = document.querySelectorAll('.polaroid[data-kind="photo"]')[3].querySelector('.polaroid__open img')!.getBoundingClientRect();
+      return { dc: Math.hypot(i.left + i.width / 2 - (o.left + o.width / 2), i.top + i.height / 2 - (o.top + o.height / 2)) };
+    });
+    expect(res.dc).toBeLessThan(6);
+  });
+
+  test('closing mid-drag does not wedge later swipes', async ({ page }) => {
+    await openPhoto(page, 3);
+    await page.waitForTimeout(450);
+    await page.evaluate(() => {
+      const st = document.querySelector('dialog.lightbox .lightbox__stage')!;
+      const ev = (t: string, x: number) => st.dispatchEvent(new PointerEvent(t, { pointerId: 9, pointerType: 'touch', isPrimary: true, clientX: x, clientY: 400, bubbles: true, button: 0, buttons: 1 }));
+      ev('pointerdown', 300); ev('pointermove', 250); ev('pointermove', 200);
+    });
+    await page.keyboard.press('Escape');
+    await expect(dlg(page)).toBeHidden();
+    await openPhoto(page, 3);
+    await page.waitForTimeout(450);
+    const next = await photos(page).nth(4).getAttribute('data-media-id');
+    const vw = page.viewportSize()!.width;
+    await drag(page, [vw * 0.8, 400], [vw * 0.2, 400]);
+    await expect.poll(() => currentId(page)).toBe(next);
   });
 });

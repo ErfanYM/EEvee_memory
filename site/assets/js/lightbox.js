@@ -61,6 +61,7 @@ export function initLightbox(root = document) {
   let closing = false;
   let busy = false; // open animation / slide transition in flight
   let instantClose = false;
+  let backPending = false; // history.back() issued, popstate not yet seen
   let anims = [];
   let token = 0; // invalidates stale async work
 
@@ -191,7 +192,7 @@ export function initLightbox(root = document) {
     img.style.transform = '';
     img.style.opacity = '';
     scrim.style.opacity = '';
-    isOpen = false; closing = false; busy = false;
+    isOpen = false; closing = false; busy = false; backPending = false; drag = null;
     const fig = figs[idx];
     fig.classList.remove('is-lb-origin');
     const btn = fig.querySelector('.polaroid__open');
@@ -213,9 +214,12 @@ export function initLightbox(root = document) {
       a.onfinish = () => { done(); };
       return;
     }
+    // Capture the dragged transform, clear it, then measure the undisplaced box so the FLIP lands on the print.
+    const from = getComputedStyle(img).transform;
+    img.style.transform = '';
     const { transform, onScreen } = originTransform(idx);
     if (onScreen) {
-      const a = track(img.animate({ transform: [getComputedStyle(img).transform, transform] }, { duration: 220, easing: EASE_SHEET, fill: 'forwards' }));
+      const a = track(img.animate({ transform: [from, transform] }, { duration: 220, easing: EASE_SHEET, fill: 'forwards' }));
       track(scrim.animate({ opacity: [Number.isNaN(startScrim) ? 1 : startScrim, 0] }, { duration: 220, easing: EASE_OUT, fill: 'forwards' }));
       a.onfinish = done;
     } else {
@@ -226,8 +230,9 @@ export function initLightbox(root = document) {
 
   // X / Esc / backdrop ask history to go back; popstate performs the close.
   function requestClose(animate) {
-    if (!isOpen || closing) return;
+    if (!isOpen || closing || backPending) return;
     if (history.state && history.state.lb) {
+      backPending = true;
       instantClose = !animate;
       history.back();
     } else {
@@ -236,6 +241,7 @@ export function initLightbox(root = document) {
   }
 
   window.addEventListener('popstate', () => {
+    backPending = false;
     if (isOpen) { const a = !instantClose; instantClose = false; close(a); }
   });
 
@@ -337,6 +343,7 @@ export function initLightbox(root = document) {
   };
   stage.addEventListener('pointerup', end);
   stage.addEventListener('pointercancel', end);
+  stage.addEventListener('lostpointercapture', (e) => { if (drag && e.pointerId === drag.id) { drag = null; springBack(); } });
 
   function springBack() {
     scrim.style.opacity = '';
