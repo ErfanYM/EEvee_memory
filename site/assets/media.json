@@ -1,0 +1,570 @@
+[
+  {
+    "id": "img_8819",
+    "kind": "photo",
+    "group": "hero",
+    "alt": "Eevee with a big happy face in the snowy woods",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_8819-480.avif",
+        "assets/img/img_8819-960.avif",
+        "assets/img/img_8819-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_8819-480.webp",
+        "assets/img/img_8819-960.webp",
+        "assets/img/img_8819-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_8819-480.jpg",
+        "assets/img/img_8819-960.jpg",
+        "assets/img/img_8819-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "37c83b77",
+    "kind": "photo",
+    "group": "meet",
+    "alt": "Eevee smiling on a town street in her bandana",
+    "width": 1600,
+    "height": 2000,
+    "sources": {
+      "avif": [
+        "assets/img/37c83b77-480.avif",
+        "assets/img/37c83b77-960.avif",
+        "assets/img/37c83b77-1600.avif"
+      ],
+      "webp": [
+        "assets/img/37c83b77-480.webp",
+        "assets/img/37c83b77-960.webp",
+        "assets/img/37c83b77-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/37c83b77-480.jpg",
+        "assets/img/37c83b77-960.jpg",
+        "assets/img/37c83b77-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_8394",
+    "kind": "photo",
+    "group": "meet",
+    "alt": "Eevee sitting proudly in the light snow",
+    "width": 1080,
+    "height": 1350,
+    "sources": {
+      "avif": [
+        "assets/img/img_8394-480.avif",
+        "assets/img/img_8394-960.avif",
+        "assets/img/img_8394-1080.avif"
+      ],
+      "webp": [
+        "assets/img/img_8394-480.webp",
+        "assets/img/img_8394-960.webp",
+        "assets/img/img_8394-1080.webp"
+      ],
+      "jpg": [
+        "assets/img/img_8394-480.jpg",
+        "assets/img/img_8394-960.jpg",
+        "assets/img/img_8394-1080.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_4837",
+    "kind": "photo",
+    "group": "meet",
+    "alt": "Eevee lying in the grass with a chew under a blue sky",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_4837-480.avif",
+        "assets/img/img_4837-960.avif",
+        "assets/img/img_4837-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_4837-480.webp",
+        "assets/img/img_4837-960.webp",
+        "assets/img/img_4837-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_4837-480.jpg",
+        "assets/img/img_4837-960.jpg",
+        "assets/img/img_4837-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "ec73ecaf",
+    "kind": "photo",
+    "group": "foodie",
+    "alt": "Eevee looking up beside a cup",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/ec73ecaf-480.avif",
+        "assets/img/ec73ecaf-960.avif",
+        "assets/img/ec73ecaf-1600.avif"
+      ],
+      "webp": [
+        "assets/img/ec73ecaf-480.webp",
+        "assets/img/ec73ecaf-960.webp",
+        "assets/img/ec73ecaf-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/ec73ecaf-480.jpg",
+        "assets/img/ec73ecaf-960.jpg",
+        "assets/img/ec73ecaf-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_0826",
+    "kind": "photo",
+    "group": "foodie",
+    "alt": "Eevee licking her lips on a picnic table",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_0826-480.avif",
+        "assets/img/img_0826-960.avif",
+        "assets/img/img_0826-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_0826-480.webp",
+        "assets/img/img_0826-960.webp",
+        "assets/img/img_0826-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_0826-480.jpg",
+        "assets/img/img_0826-960.jpg",
+        "assets/img/img_0826-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_7207",
+    "kind": "photo",
+    "group": "foodie",
+    "alt": "Eevee with her 10th birthday cake",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_7207-480.avif",
+        "assets/img/img_7207-960.avif",
+        "assets/img/img_7207-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_7207-480.webp",
+        "assets/img/img_7207-960.webp",
+        "assets/img/img_7207-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_7207-480.jpg",
+        "assets/img/img_7207-960.jpg",
+        "assets/img/img_7207-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_2017",
+    "kind": "photo",
+    "group": "walks",
+    "alt": "Eevee walking on a sidewalk",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_2017-480.avif",
+        "assets/img/img_2017-960.avif",
+        "assets/img/img_2017-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_2017-480.webp",
+        "assets/img/img_2017-960.webp",
+        "assets/img/img_2017-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_2017-480.jpg",
+        "assets/img/img_2017-960.jpg",
+        "assets/img/img_2017-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "b0eaddd4",
+    "kind": "photo",
+    "group": "walks",
+    "alt": "Eevee lying on paving stones on a town street",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/b0eaddd4-480.avif",
+        "assets/img/b0eaddd4-960.avif",
+        "assets/img/b0eaddd4-1600.avif"
+      ],
+      "webp": [
+        "assets/img/b0eaddd4-480.webp",
+        "assets/img/b0eaddd4-960.webp",
+        "assets/img/b0eaddd4-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/b0eaddd4-480.jpg",
+        "assets/img/b0eaddd4-960.jpg",
+        "assets/img/b0eaddd4-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_6802",
+    "kind": "photo",
+    "group": "hikes",
+    "alt": "Eevee small in the distance on a forest trail",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_6802-480.avif",
+        "assets/img/img_6802-960.avif",
+        "assets/img/img_6802-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_6802-480.webp",
+        "assets/img/img_6802-960.webp",
+        "assets/img/img_6802-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_6802-480.jpg",
+        "assets/img/img_6802-960.jpg",
+        "assets/img/img_6802-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_4144",
+    "kind": "photo",
+    "group": "hikes",
+    "alt": "Eevee sitting on a stone block in a park",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_4144-480.avif",
+        "assets/img/img_4144-960.avif",
+        "assets/img/img_4144-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_4144-480.webp",
+        "assets/img/img_4144-960.webp",
+        "assets/img/img_4144-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_4144-480.jpg",
+        "assets/img/img_4144-960.jpg",
+        "assets/img/img_4144-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_5023",
+    "kind": "photo",
+    "group": "hikes",
+    "alt": "Eevee watching the sunset over a big field",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_5023-480.avif",
+        "assets/img/img_5023-960.avif",
+        "assets/img/img_5023-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_5023-480.webp",
+        "assets/img/img_5023-960.webp",
+        "assets/img/img_5023-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_5023-480.jpg",
+        "assets/img/img_5023-960.jpg",
+        "assets/img/img_5023-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_4973",
+    "kind": "photo",
+    "group": "hikes",
+    "alt": "Eevee jumping into a paddling pool",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_4973-480.avif",
+        "assets/img/img_4973-960.avif",
+        "assets/img/img_4973-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_4973-480.webp",
+        "assets/img/img_4973-960.webp",
+        "assets/img/img_4973-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_4973-480.jpg",
+        "assets/img/img_4973-960.jpg",
+        "assets/img/img_4973-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "232ed04c",
+    "kind": "photo",
+    "group": "adventures",
+    "alt": "Eevee running toward the camera across a field",
+    "width": 1599,
+    "height": 1200,
+    "sources": {
+      "avif": [
+        "assets/img/232ed04c-480.avif",
+        "assets/img/232ed04c-960.avif",
+        "assets/img/232ed04c-1599.avif"
+      ],
+      "webp": [
+        "assets/img/232ed04c-480.webp",
+        "assets/img/232ed04c-960.webp",
+        "assets/img/232ed04c-1599.webp"
+      ],
+      "jpg": [
+        "assets/img/232ed04c-480.jpg",
+        "assets/img/232ed04c-960.jpg",
+        "assets/img/232ed04c-1599.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "20221006",
+    "kind": "photo",
+    "group": "adventures",
+    "alt": "Eevee under an autumn maple tree",
+    "width": 1600,
+    "height": 3552,
+    "sources": {
+      "avif": [
+        "assets/img/20221006-480.avif",
+        "assets/img/20221006-960.avif",
+        "assets/img/20221006-1600.avif"
+      ],
+      "webp": [
+        "assets/img/20221006-480.webp",
+        "assets/img/20221006-960.webp",
+        "assets/img/20221006-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/20221006-480.jpg",
+        "assets/img/20221006-960.jpg",
+        "assets/img/20221006-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_3785",
+    "kind": "photo",
+    "group": "snow",
+    "alt": "Eevee in a yellow raincoat in the snow, facing the camera",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_3785-480.avif",
+        "assets/img/img_3785-960.avif",
+        "assets/img/img_3785-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_3785-480.webp",
+        "assets/img/img_3785-960.webp",
+        "assets/img/img_3785-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_3785-480.jpg",
+        "assets/img/img_3785-960.jpg",
+        "assets/img/img_3785-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_3786",
+    "kind": "photo",
+    "group": "snow",
+    "alt": "Eevee in a yellow raincoat in the snow, in profile",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_3786-480.avif",
+        "assets/img/img_3786-960.avif",
+        "assets/img/img_3786-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_3786-480.webp",
+        "assets/img/img_3786-960.webp",
+        "assets/img/img_3786-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_3786-480.jpg",
+        "assets/img/img_3786-960.jpg",
+        "assets/img/img_3786-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_8788",
+    "kind": "photo",
+    "group": "snow",
+    "alt": "Eevee exploring the snowy woods",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_8788-480.avif",
+        "assets/img/img_8788-960.avif",
+        "assets/img/img_8788-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_8788-480.webp",
+        "assets/img/img_8788-960.webp",
+        "assets/img/img_8788-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_8788-480.jpg",
+        "assets/img/img_8788-960.jpg",
+        "assets/img/img_8788-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_1551",
+    "kind": "photo",
+    "group": "cozy",
+    "alt": "Eevee at Christmas in antlers with her green toy",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_1551-480.avif",
+        "assets/img/img_1551-960.avif",
+        "assets/img/img_1551-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_1551-480.webp",
+        "assets/img/img_1551-960.webp",
+        "assets/img/img_1551-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_1551-480.jpg",
+        "assets/img/img_1551-960.jpg",
+        "assets/img/img_1551-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "img_7522",
+    "kind": "photo",
+    "group": "cozy",
+    "alt": "Eevee cozy on a fluffy rug",
+    "width": 1600,
+    "height": 2133,
+    "sources": {
+      "avif": [
+        "assets/img/img_7522-480.avif",
+        "assets/img/img_7522-960.avif",
+        "assets/img/img_7522-1600.avif"
+      ],
+      "webp": [
+        "assets/img/img_7522-480.webp",
+        "assets/img/img_7522-960.webp",
+        "assets/img/img_7522-1600.webp"
+      ],
+      "jpg": [
+        "assets/img/img_7522-480.jpg",
+        "assets/img/img_7522-960.jpg",
+        "assets/img/img_7522-1600.jpg"
+      ]
+    },
+    "poster": null
+  },
+  {
+    "id": "23983ab7",
+    "kind": "video",
+    "group": "adventures",
+    "alt": "Eevee walking along the grass with a stick in her mouth",
+    "width": 720,
+    "height": 1280,
+    "sources": {
+      "mp4": "assets/video/23983ab7.mp4"
+    },
+    "poster": "assets/img/23983ab7-poster-960.webp"
+  },
+  {
+    "id": "0f88d984",
+    "kind": "video",
+    "group": "adventures",
+    "alt": "Eevee carrying a big stick at the playground",
+    "width": 720,
+    "height": 1280,
+    "sources": {
+      "mp4": "assets/video/0f88d984.mp4"
+    },
+    "poster": "assets/img/0f88d984-poster-960.webp"
+  },
+  {
+    "id": "b9e5276c",
+    "kind": "video",
+    "group": "walks",
+    "alt": "Eevee trotting along a wet park path",
+    "width": 720,
+    "height": 1280,
+    "sources": {
+      "mp4": "assets/video/b9e5276c.mp4"
+    },
+    "poster": "assets/img/b9e5276c-poster-960.webp"
+  },
+  {
+    "id": "c1a73628",
+    "kind": "video",
+    "group": "snow",
+    "alt": "Eevee on a snow walk in her yellow raincoat",
+    "width": 720,
+    "height": 1280,
+    "sources": {
+      "mp4": "assets/video/c1a73628.mp4"
+    },
+    "poster": "assets/img/c1a73628-poster-960.webp"
+  }
+]
