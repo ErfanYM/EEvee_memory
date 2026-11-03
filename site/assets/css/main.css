@@ -128,8 +128,10 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 .polaroid.polaroid--video.is-playing .polaroid__tilt { transform: rotate(0deg) scale(1.03); transition: transform 240ms var(--ease-out); }
 
 /* focus ring stays level: drawn on the unrotated figure, not on the tilted button (DESIGN-SYSTEM section 4) */
-.polaroid__open:focus-visible, .video__play:focus-visible { outline: none; }
-.polaroid:has(.polaroid__open:focus-visible), .polaroid:has(.video__play:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+@supports selector(:has(*)) {
+  .polaroid__open:focus-visible, .video__play:focus-visible { outline: none; }
+  .polaroid:has(.polaroid__open:focus-visible), .polaroid:has(.video__play:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+}
 
 /* tape: static strip, rotated opposite to its print, never over a face */
 .polaroid--tape-sun { --tape: var(--tape-sun); }
@@ -143,8 +145,8 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 }
 
 /* press (all inputs) and hover (fine pointers only) */
-.polaroid:not(.polaroid--video):active .polaroid__tilt,
-.js .polaroid.is-in.is-done:not(.polaroid--video):active .polaroid__tilt { transform: rotate(var(--tilt)) scale(.97); transition-duration: 100ms; }
+.polaroid:not(.polaroid--video):active .polaroid__tilt { transform: rotate(var(--tilt)) scale(.97); transition-duration: 100ms; }
+.js .polaroid.is-in.is-done:not(.polaroid--video):active .polaroid__tilt { transition-duration: 100ms; }
 @media (hover: hover) and (pointer: fine) {
   .polaroid:hover .polaroid__tilt { transform: rotate(calc(var(--tilt) * .6)) translateY(-4px); }
   .polaroid:not(.polaroid--video):active:hover .polaroid__tilt { transform: rotate(calc(var(--tilt) * .6)) translateY(-4px) scale(.97); }

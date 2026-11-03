@@ -1,11 +1,23 @@
 import { test, expect } from '@playwright/test';
 
-test('failsafe reveals every pending print after 2500ms without scrolling', async ({ page }) => {
+test('a working observer is never timed out: prints stay pending after 2.7s and settle on scroll', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.waitForLoadState('load');
-  expect(await page.locator('.is-pending').count()).toBeGreaterThan(0);
   await page.waitForTimeout(2700);
+  expect(await page.locator('.is-pending').count()).toBeGreaterThan(0);
+  const id = await page.locator('.polaroid.is-pending').first().getAttribute('data-media-id');
+  const target = page.locator(`[data-media-id="${id}"]`);
+  await target.scrollIntoViewIfNeeded();
+  await expect(target).not.toHaveClass(/is-pending/);
+  await expect(target).toHaveClass(/is-in/);
+});
+
+test('without IntersectionObserver nothing is left pending at load', async ({ page }) => {
+  await page.addInitScript(() => { delete (window as any).IntersectionObserver; });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.waitForLoadState('load');
   expect(await page.locator('.is-pending').count()).toBe(0);
 });
 

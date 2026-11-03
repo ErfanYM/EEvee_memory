@@ -60,12 +60,15 @@ test('zero console errors on load', async ({ page, browserName }) => {
   const errs: string[] = [];
   page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); });
   page.on('pageerror', (e) => errs.push(String(e)));
-  page.on('requestfailed', (r) => errs.push(`requestfailed ${r.url()}`));
+  page.on('requestfailed', (r) => {
+    if (/\.mp4(\?|$)/.test(r.url()) && /abort/i.test(r.failure()?.errorText ?? '')) return;
+    errs.push(`requestfailed ${r.url()}`);
+  });
   await page.goto('/');
   await page.waitForLoadState('load');
   await page.waitForTimeout(500);
-  // Playwright's Firefox build lacks H.264; ignore only mp4 decode errors there.
-  const real = errs.filter((e) => !(browserName === 'firefox' && /mp4|media|decode|h\.?264/i.test(e)));
+  // Playwright's Firefox build lacks H.264; ignore only genuine decode errors there (aborted .mp4 requests are ignored everywhere).
+  const real = errs.filter((e) => !(browserName === 'firefox' && /(cannot|can't|failed to) (decode|play)|NS_ERROR_DOM_MEDIA|no decoders/i.test(e)));
   expect(real).toEqual([]);
 });
 

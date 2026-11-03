@@ -22,7 +22,9 @@ export function initReveal() {
   pending.forEach((el) => el.classList.add('is-pending'));
   if (!('IntersectionObserver' in window)) { showAll(); return; }
 
+  let delivered = false;
   const io = new IntersectionObserver((entries) => {
+    delivered = true;
     let step = 0;
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -32,6 +34,7 @@ export function initReveal() {
   }, { threshold: 0.15 });
   pending.forEach((el) => io.observe(el));
 
-  // Failsafe (DESIGN-SYSTEM section 9): a stalled observer must never leave a blank section.
-  setTimeout(() => { io.disconnect(); showAll(); }, FAILSAFE_MS);
+  // Failsafe (DESIGN-SYSTEM section 9, R12): only a broken observer is overridden; a working one is never timed out.
+  setTimeout(() => { if (!delivered) { io.disconnect(); showAll(); } }, FAILSAFE_MS);
+  window.addEventListener('beforeprint', () => { io.disconnect(); showAll(); });
 }
