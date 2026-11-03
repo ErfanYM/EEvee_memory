@@ -117,6 +117,15 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 .video__play::before { content: ""; position: absolute; width: 64px; height: 64px; border-radius: 50%;
   background: rgb(255 255 255 / .92); box-shadow: 0 0 0 1px rgb(0 0 0 / .2); }
 .video__play svg { position: relative; transform: translateX(2px); }
+.video__play { transition: opacity 150ms var(--ease-out), visibility 0s linear 0s; }
+.polaroid--video.is-playing:not(.is-buffering):not(.is-error) .video__play { opacity: 0; visibility: hidden; pointer-events: none; transition-delay: 0s, 150ms; }
+.polaroid--video.is-buffering .video__play { pointer-events: none; }
+.polaroid--video.is-buffering .video__play svg { opacity: 0; }
+.polaroid--video.is-buffering .video__play::after { content: ""; position: absolute; width: 24px; height: 24px; box-sizing: border-box;
+  border: 3px solid rgb(143 42 69 / .25); border-top-color: var(--berry); border-radius: 50%; animation: video-spin 800ms linear infinite; }
+.polaroid--video.is-error .video__play svg { transform: none; }
+@keyframes video-spin { to { transform: rotate(360deg); } }
+.polaroid.polaroid--video.is-playing .polaroid__tilt { transform: rotate(0deg) scale(1.03); transition: transform 240ms var(--ease-out); }
 
 /* tape: static strip, rotated opposite to its print, never over a face */
 .polaroid--tape-sun { --tape: var(--tape-sun); }
@@ -192,5 +201,8 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
   .js .polaroid.is-in .polaroid__tilt, .js .polaroid.is-in.is-done .polaroid__tilt { transition: opacity 200ms linear; transition-delay: 0ms; }
   .polaroid:hover .polaroid__tilt, .polaroid:active .polaroid__tilt { transform: rotate(var(--tilt)); }
   .polaroid:not(.polaroid--video):active .polaroid__tilt { opacity: .85; }
+  .polaroid.polaroid--video.is-playing .polaroid__tilt { transform: rotate(var(--tilt)); transition: none; }
+  .polaroid--video.is-buffering .video__play::after { animation: none; }
+  .video__play { transition: none; }
   .donate { transition: background-color 150ms linear; }
 }
