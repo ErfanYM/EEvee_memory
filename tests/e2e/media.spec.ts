@@ -45,7 +45,9 @@ test('videos follow the DOM contract', async ({ page }) => {
     await expect(video).toHaveAttribute('playsinline', '');
     await expect(video).toHaveAttribute('width', /\d+/);
     await expect(video).toHaveAttribute('height', /\d+/);
-    await expect(video).toHaveAttribute('poster', /poster-960/);
+    await expect(video).toHaveAttribute('data-poster', /poster-960/);
+    await v.scrollIntoViewIfNeeded();
+    await expect(video).toHaveAttribute('poster', /poster-960/); // set as the print nears the viewport (P1)
     expect(await video.getAttribute('autoplay')).toBeNull();
     await expect(v.locator('button.video__play')).toHaveAttribute('aria-label', /^Play video: .+/);
   }

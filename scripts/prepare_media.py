@@ -6,7 +6,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from media_config import MEDIA, WIDTHS, OG_SOURCE
+from media_config import MEDIA, WIDTHS, HERO_EXTRA_WIDTHS, OG_SOURCE
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
@@ -61,7 +61,7 @@ def save_set(im: Image.Image, stem: str, widths):
 def photo(entry):
     pid = slug(entry["file"])
     im = load_upright(ROOT / entry["file"])
-    widths = sorted({min(w, im.width) for w in WIDTHS})
+    widths = sorted({min(w, im.width) for w in WIDTHS + (HERO_EXTRA_WIDTHS if entry["group"] == "hero" else ())})
     sources = save_set(im, pid, widths)
     w, h = Image.open(SITE / sources["jpg"][-1]).size
     return dict(id=pid, kind="photo", group=entry["group"], alt=entry["alt"],

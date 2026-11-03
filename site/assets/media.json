@@ -9,16 +9,19 @@
     "sources": {
       "avif": [
         "assets/img/img_8819-480.avif",
+        "assets/img/img_8819-560.avif",
         "assets/img/img_8819-960.avif",
         "assets/img/img_8819-1600.avif"
       ],
       "webp": [
         "assets/img/img_8819-480.webp",
+        "assets/img/img_8819-560.webp",
         "assets/img/img_8819-960.webp",
         "assets/img/img_8819-1600.webp"
       ],
       "jpg": [
         "assets/img/img_8819-480.jpg",
+        "assets/img/img_8819-560.jpg",
         "assets/img/img_8819-960.jpg",
         "assets/img/img_8819-1600.jpg"
       ]

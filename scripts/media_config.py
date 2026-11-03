@@ -34,4 +34,5 @@ MEDIA: list[dict] = [
 ]
 
 WIDTHS = (480, 960, 1600)
+HERO_EXTRA_WIDTHS = (560,)  # the LCP image gets a mid tier so 1.75-2x phones do not pull 960w for a ~290px print
 OG_SOURCE = "IMG_8819.JPEG"
