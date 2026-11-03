@@ -43,7 +43,7 @@
 }
 @media (max-width: 480px) { :root { --chapter-pad: 56px; } }
 @media (min-width: 1024px) { :root { --print-pad: 14px; --print-pad-bottom: 50px; } }
-@media (min-width: 1600px) { :root { --wrap: 1320px; } }
+@media (min-width: 1600px) { :root { --wrap: 1320px; --step-body: clamp(1.125rem, 1.05rem + .3vw, 1.4rem); } } /* T9 */
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-gutter: stable; }
@@ -60,9 +60,9 @@ img, video { display: block; max-width: 100%; }
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 /* ---- fields ---- */
-.field { padding-block: var(--chapter-pad); background: var(--field-sky); }
-.field--meadow { background: var(--field-meadow); }
-.field--blush { background: var(--field-blush); }
+.field { --field: var(--field-sky); padding-block: var(--chapter-pad); background: var(--field); }
+.field--meadow { --field: var(--field-meadow); }
+.field--blush { --field: var(--field-blush); }
 .field--first { padding-top: clamp(44px, 8vw, 112px); }
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
 
@@ -107,7 +107,7 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 }
 .polaroid--hero { --print-pad: 16px; --print-pad-bottom: 56px; }
 .polaroid__open {
-  display: block; width: 100%; margin: 0; padding: 0; border: 0; background: #E9E4DE; cursor: pointer; font: inherit; color: inherit;
+  display: block; width: 100%; margin: 0; padding: 0; border: 0; background: color-mix(in srgb, var(--field) 70%, white); cursor: pointer; font: inherit; color: inherit;
   aspect-ratio: var(--ar); overflow: hidden; border-radius: var(--radius-photo);
   -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-touch-callout: none; user-select: none;
 }
@@ -115,7 +115,7 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 .polaroid__open img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-photo); -webkit-user-drag: none; }
 .polaroid[data-media-id="20221006"] img { object-position: 50% 62%; }
 
-.polaroid--video .polaroid__window { position: relative; aspect-ratio: 9 / 16; background: #E9E4DE; border-radius: var(--radius-photo); overflow: hidden; }
+.polaroid--video .polaroid__window { position: relative; aspect-ratio: 9 / 16; background: color-mix(in srgb, var(--field) 70%, white); border-radius: var(--radius-photo); overflow: hidden; }
 .polaroid--video video { width: 100%; height: 100%; object-fit: cover; }
 .video__poster-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .video__play {
@@ -137,6 +137,10 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 .polaroid--video.is-error .video__play svg { transform: none; }
 @keyframes video-spin { to { transform: rotate(360deg); } }
 .polaroid.polaroid--video.is-playing .polaroid__tilt { transform: rotate(0deg) scale(1.03); transition: transform 240ms var(--ease-out); }
+
+/* I7: without JS nothing plays or opens, so no play disc and no pointer cursor */
+html:not(.js) .video__play { display: none; }
+html:not(.js) .polaroid__open { cursor: default; }
 
 /* focus ring stays level: drawn on the unrotated figure, not on the tilted button (DESIGN-SYSTEM section 4) */
 @supports selector(:has(*)) {
@@ -194,6 +198,10 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
   .spread { width: calc(100% + 48px); margin-inline: -24px; padding-inline: 24px; row-gap: 0; }
   .copy { margin-inline: 0; }
   .copy[data-copy="meet-2"] { margin-left: calc(50% + 24px); } /* T3: meet-1 left, meet-2 right, meet-3 left */
+}
+@media (min-width: 1600px) {
+  /* T8: spreads use the full 1320 wrap (plus 24px side room), so 3-up prints reach ~400px and the lead ~460px */
+  .spread { width: calc(100% + 144px); margin-inline: -72px; }
 }
 
 /* ---- donation ---- */
@@ -335,8 +343,8 @@ dialog.lightbox::backdrop { background: transparent; }
 .polaroid[data-media-id="img_4837"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:56px;}
 .spread--s2{grid-template-columns:1fr 1.25fr 1fr;column-gap:40px;}
 .polaroid[data-media-id="ec73ecaf"]{grid-column:1;grid-row:1;align-self:start;margin:0;margin-top:48px;}
-.polaroid[data-media-id="img_7207"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:0px;}
-.polaroid[data-media-id="img_0826"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:24px;}
+.polaroid[data-media-id="img_7207"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:0px;left:-68px;}
+.polaroid[data-media-id="img_0826"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:16px;}
 .spread--s3{grid-template-columns:1fr 1.25fr 1fr;column-gap:40px;}
 .polaroid[data-media-id="img_2017"]{grid-column:1;grid-row:1;align-self:start;margin:0;margin-top:56px;}
 .polaroid[data-media-id="b9e5276c"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:0px;}
@@ -347,17 +355,28 @@ dialog.lightbox::backdrop { background: transparent; }
 .polaroid[data-media-id="img_4144"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:32px;}
 .polaroid[data-media-id="img_4973"]{grid-column:4;grid-row:1;align-self:start;margin:0;margin-top:0px;margin-inline:-10%;}
 .spread--s5{grid-template-columns:1fr 1.25fr 1fr;column-gap:40px;}
-.polaroid[data-media-id="23983ab7"]{grid-column:1;grid-row:1;align-self:start;margin:0;margin-top:24px;}
-.polaroid[data-media-id="232ed04c"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:0px;}
-.polaroid[data-media-id="0f88d984"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:52px;}
+.polaroid[data-media-id="23983ab7"]{grid-column:1;grid-row:1;align-self:start;margin:0;margin-top:0px;}
+.polaroid[data-media-id="232ed04c"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:40px;}
+.polaroid[data-media-id="0f88d984"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:0px;}
 .spread--s6{grid-template-columns:1fr 1fr 1fr 1fr;column-gap:24px;}
 .polaroid[data-media-id="img_3785"]{grid-column:1;grid-row:1;align-self:start;margin:0;margin-top:0px;}
-.polaroid[data-media-id="img_3786"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:28px;}
+.polaroid[data-media-id="img_3786"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:28px;left:-52px;}
 .polaroid[data-media-id="c1a73628"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:12px;}
 .polaroid[data-media-id="img_8788"]{grid-column:4;grid-row:1;align-self:start;margin:0;margin-top:32px;}
 .spread--s7{grid-template-columns:1fr 1.25fr 1fr;column-gap:40px;}
-.polaroid[data-media-id="img_1551"]{grid-column:1;grid-row:1;align-self:start;margin:0;margin-top:36px;}
-.polaroid[data-media-id="img_7522"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:52px;}
+.polaroid[data-media-id="img_1551"]{grid-column:1;grid-row:1;align-self:start;margin:0;margin-top:48px;}
+.polaroid[data-media-id="img_7522"]{grid-column:3;grid-row:1;align-self:start;margin:0;margin-top:40px;}
 .polaroid[data-media-id="20221006"]{grid-column:2;grid-row:1;align-self:start;margin:0;margin-top:0px;}
+}
+@media (min-width: 1600px) {
+.spread--s1{grid-template-columns:1fr 1.15fr 1fr;column-gap:28px;}
+.spread--s2{grid-template-columns:1fr 1.15fr 1fr;column-gap:28px;}
+.polaroid[data-media-id="img_7207"]{left:-56px;}
+.spread--s3{grid-template-columns:1fr 1.15fr 1fr;column-gap:28px;}
+.spread--s4{grid-template-columns:1fr 1fr 1fr 1fr;column-gap:24px;}
+.spread--s5{grid-template-columns:1fr 1.15fr 1fr;column-gap:28px;}
+.spread--s6{grid-template-columns:1fr 1fr 1fr 1fr;column-gap:24px;}
+.polaroid[data-media-id="img_3786"]{left:-52px;}
+.spread--s7{grid-template-columns:1fr 1.15fr 1fr;column-gap:28px;}
 }
 /* END GENERATED SPREADS */

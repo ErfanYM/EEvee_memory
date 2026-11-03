@@ -67,14 +67,17 @@ SPREADS = [
 # kind "4" = four across, lead widened to 1.2x by a negative inline margin. Per print: (column, margin-top px).
 DT_LAYOUT = {
     "s1": ("3", [(1, 32), (2, 0), (3, 56)]),
-    "s2": ("3", [(1, 48), (2, 0), (3, 24)]),
+    "s2": ("3", [(1, 48), (2, 0), (3, 16)]),
     "s3": ("3", [(1, 56), (2, 0), (3, 20)]),
     "s4": ("4", [(1, 28), (2, 8), (3, 32), (4, 0)]),
-    "s5": ("3", [(1, 24), (2, 0), (3, 52)]),
+    "s5": ("3", [(1, 0), (2, 40), (3, 0)]),  # T7: the landscape print sits 40px lower than its two videos
     "s6": ("4", [(1, 0), (2, 28), (3, 12), (4, 32)]),
-    "s7": ("3", [(1, 36), (3, 52), (2, 0)]),  # 20221006 (lead, last in the DOM) sits in the middle column
+    "s7": ("3", [(1, 48), (3, 40), (2, 0)]),  # 20221006 (lead, last in the DOM) sits in the middle column
 }
 DT_GAP = {"3": 40, "4": 24}
+DT_GAP_HI = {"3": 28, "4": 24}      # >=1600 (T8): spread content is the full 1320 wrap, lead 1.15x -> ~400/460px prints
+DT_FR_HI = {"3": [1, 1.15, 1], "4": [1, 1, 1, 1]}
+OVERLAP = {"img_7207": 28, "img_3786": 28}  # T7: px this print tucks over its left neighbour (never over a face)
 DT_FR = {"3": [1, 1.25, 1], "4": [1, 1, 1, 1]}
 LEAD4 = 1.2
 PRINT_PAD_DT = 28  # 2 x 14px card padding at >=1024
@@ -131,7 +134,8 @@ def dt_sizes(sid, pid):
     mult = LEAD4 if (kind == "4" and items[pid]) else 1
     sumfr = sum(DT_FR[kind])
     lo = f"calc((min(100vw, {WRAP_PX['lo']}px) - {96 + gap * (n - 1)}px) * {fmt(fr * mult)}/{fmt(sumfr)} - {PRINT_PAD_DT}px)"
-    hi = round((WRAP_PX["hi"] - 96 - gap * (n - 1)) * fr * mult / sumfr - PRINT_PAD_DT)
+    frh = DT_FR_HI[kind][col - 1]
+    hi = round((WRAP_PX["hi"] - DT_GAP_HI[kind] * (n - 1)) * frh * mult / sum(DT_FR_HI[kind]) - PRINT_PAD_DT)
     return lo, hi
 
 
@@ -325,15 +329,31 @@ for idx, (name, mq) in enumerate([("ph", None), ("tb", "(min-width: 481px)")]):
             rules.append(f"{sel}{{grid-column:{col.replace('/', ' / ')};grid-row:{str(row).replace('/', ' / ')};margin:0;{extra}}}")
     body = "\n".join(rules)
     css.append(f"@media {mq} {{\n{body}\n}}" if mq else body)
-rules = []
-for sid, items in SPREADS:
-    kind, places = DT_LAYOUT[sid]
-    tpl = " ".join(f"{f:g}fr" for f in DT_FR[kind])
-    rules.append(f".spread--{sid}{{grid-template-columns:{tpl};column-gap:{DT_GAP[kind]}px;}}")
-    for it, (col, mt) in zip(items, places):
-        extra = "margin-inline:-10%;" if (kind == "4" and it[3]) else ""
-        rules.append(f'.polaroid[data-media-id="{it[0]}"]{{grid-column:{col};grid-row:1;align-self:start;margin:0;margin-top:{mt}px;{extra}}}')
-css.append("@media (min-width: 1024px) {\n" + "\n".join(rules) + "\n}")
+def dt_rules(hi):
+    rules = []
+    gaps, frs = (DT_GAP_HI, DT_FR_HI) if hi else (DT_GAP, DT_FR)
+    for sid, items in SPREADS:
+        kind, places = DT_LAYOUT[sid]
+        tpl = " ".join(f"{f:g}fr" for f in frs[kind])
+        rules.append(f".spread--{sid}{{grid-template-columns:{tpl};column-gap:{gaps[kind]}px;}}")
+        for it, (col, mt) in zip(items, places):
+            extra = ""
+            if not hi or True:
+                extra += "margin-inline:-10%;" if (kind == "4" and it[3]) else ""
+            if it[0] in OVERLAP:
+                extra += f"left:-{gaps[kind] + OVERLAP[it[0]]}px;"
+            if hi:
+                # only what differs from the >=1024 rule; the overlap shift depends on the gap
+                if it[0] not in OVERLAP:
+                    continue
+                rules.append(f'.polaroid[data-media-id="{it[0]}"]{{{extra}}}')
+            else:
+                rules.append(f'.polaroid[data-media-id="{it[0]}"]{{grid-column:{col};grid-row:1;align-self:start;margin:0;margin-top:{mt}px;{extra}}}')
+    return rules
+
+
+css.append("@media (min-width: 1024px) {\n" + "\n".join(dt_rules(False)) + "\n}")
+css.append("@media (min-width: 1600px) {\n" + "\n".join(dt_rules(True)) + "\n}")
 css.append(END)
 main = SITE / "assets/css/main.css"
 text = main.read_text()

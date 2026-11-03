@@ -47,6 +47,11 @@ export function initVideos(root = document) {
       }, { rootMargin: '600px 0px' })
     : null;
 
+  // E7: once the page has loaded and the browser is idle, every poster is fetched, so a jump-scroll never meets an empty box.
+  const allPosters = () => { for (const v of list) if (!v.poster && v.dataset.poster) v.poster = v.dataset.poster; };
+  const idle = () => (window.requestIdleCallback ? requestIdleCallback(allPosters, { timeout: 3000 }) : setTimeout(allPosters, 3000));
+  if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, { once: true });
+
   for (const v of list) {
     videos.add(v);
     if (posterIO) posterIO.observe(v); else v.poster = v.dataset.poster;
