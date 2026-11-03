@@ -127,6 +127,10 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 @keyframes video-spin { to { transform: rotate(360deg); } }
 .polaroid.polaroid--video.is-playing .polaroid__tilt { transform: rotate(0deg) scale(1.03); transition: transform 240ms var(--ease-out); }
 
+/* focus ring stays level: drawn on the unrotated figure, not on the tilted button (DESIGN-SYSTEM section 4) */
+.polaroid__open:focus-visible, .video__play:focus-visible { outline: none; }
+.polaroid:has(.polaroid__open:focus-visible), .polaroid:has(.video__play:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+
 /* tape: static strip, rotated opposite to its print, never over a face */
 .polaroid--tape-sun { --tape: var(--tape-sun); }
 .polaroid--tape-sky { --tape: var(--tape-sky); }
@@ -139,7 +143,8 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 }
 
 /* press (all inputs) and hover (fine pointers only) */
-.polaroid:not(.polaroid--video):active .polaroid__tilt { transform: rotate(var(--tilt)) scale(.97); transition-duration: 100ms; }
+.polaroid:not(.polaroid--video):active .polaroid__tilt,
+.js .polaroid.is-in.is-done:not(.polaroid--video):active .polaroid__tilt { transform: rotate(var(--tilt)) scale(.97); transition-duration: 100ms; }
 @media (hover: hover) and (pointer: fine) {
   .polaroid:hover .polaroid__tilt { transform: rotate(calc(var(--tilt) * .6)) translateY(-4px); }
   .polaroid:not(.polaroid--video):active:hover .polaroid__tilt { transform: rotate(calc(var(--tilt) * .6)) translateY(-4px) scale(.97); }
@@ -163,21 +168,22 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 @media (min-width: 481px) {
   .spread { grid-template-columns: repeat(24, minmax(0, 1fr)); row-gap: 24px; width: min(92vw, 760px); margin-inline: auto; padding-inline: 0; }
   .copy { margin-inline: auto; }
-  .field--donate .copy, .field--donate .donate, .field--donate .domain, .field--donate h2 { margin-inline: auto; }
 }
 @media (min-width: 1024px) {
   .spread { width: 100%; margin-inline: 0; row-gap: 28px; }
-  .copy, .field--donate .copy { margin-inline: 0; }
-  .field--donate .donate, .field--donate .domain, .field--donate h2 { margin-inline: 0; }
+  .copy { margin-inline: 0; }
 }
 
 /* ---- donation ---- */
 .field--donate h2 { margin-bottom: clamp(20px, 3vw, 28px); max-width: 14ch; }
-.field--donate .wrap > * { max-width: var(--measure); }
+:where(.field--donate .wrap > *) { max-width: var(--measure); }
 .field--donate .copy--lead { max-width: var(--measure-lead); }
-@media (min-width: 481px) { .field--donate .wrap { display: flex; flex-direction: column; align-items: center; }
-  .field--donate .wrap > * { width: 100%; } }
-@media (min-width: 1024px) { .field--donate .wrap { align-items: flex-start; } }
+/* >=481: one shared left-aligned column (36ch of body type), so button, domain and copy share a left edge */
+@media (min-width: 481px) {
+  .field--donate .wrap { display: grid; grid-template-columns: minmax(0, var(--measure)); justify-content: center; justify-items: start; }
+  .field--donate .copy, .field--donate .donate, .field--donate .domain, .field--donate h2 { margin-inline: 0; }
+}
+@media (min-width: 1024px) { .field--donate .wrap { justify-content: start; } }
 .donate {
   display: flex; align-items: center; justify-content: center; width: 100%; max-width: 22rem; min-height: 56px; padding: 14px 28px;
   margin-top: clamp(8px, 2vw, 16px);

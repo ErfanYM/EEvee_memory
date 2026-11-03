@@ -18,7 +18,8 @@ DOMAIN = "torontohumanesociety.donorsupport.co"
 LABEL = "Make a donation in Eevee’s memory"
 SITE_URL = "https://erfanym.github.io/EEvee_memory/"
 TITLE = "In Loving Memory of Eevee"
-DESC = "A page to remember Eevee, our sweet golden retriever, with her photos and videos."
+DESC = "Eevee was the sweetest girl who brought us 12 years of happiness."  # the family's own words only
+OG_ALT = "Eevee smiling in the snowy woods"
 
 # Per print: tilt, tape colour, lead flag, then placements per breakpoint:
 # ph (<=480, 20-col grid), tb (481-1023, 24-col), dt (>=1024, 24-col): (column, row, extra css)
@@ -176,11 +177,17 @@ html = f"""<!doctype html>
 <meta property="og:description" content="{DESC}">
 <meta property="og:url" content="{SITE_URL}">
 <meta property="og:image" content="{SITE_URL}assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{OG_ALT}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{TITLE}">
 <meta name="twitter:description" content="{DESC}">
 <meta name="twitter:image" content="{SITE_URL}assets/og.jpg">
-<link rel="icon" href="assets/favicon.png" type="image/png">
+<meta name="twitter:image:alt" content="{OG_ALT}">
+<link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="assets/favicon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/zilla-slab-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/zilla-slab-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
