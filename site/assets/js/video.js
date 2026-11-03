@@ -84,9 +84,9 @@ export function initVideos(root = document) {
       });
     };
 
-    b.addEventListener('click', start);
-    // Poster tap (before controls exist) starts playback too.
-    v.addEventListener('click', () => { if (!v.hasAttribute('controls')) start(); });
+    // E9: a click anywhere on the print (disc, poster or white frame) starts playback, via the same synchronous start().
+    // Once playback has begun the controls attribute is set, so the frame never intercepts the native controls.
+    fig(v).addEventListener('click', () => { if (!v.hasAttribute('controls')) start(); });
 
     v.addEventListener('play', () => {
       for (const o of videos) if (o !== v && !o.paused) resetToPoster(o);

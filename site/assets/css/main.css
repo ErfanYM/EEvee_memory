@@ -108,10 +108,15 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 .polaroid--hero { --print-pad: 16px; --print-pad-bottom: 56px; }
 .polaroid__open {
   display: block; width: 100%; margin: 0; padding: 0; border: 0; background: color-mix(in srgb, var(--field) 70%, white); cursor: pointer; font: inherit; color: inherit;
-  aspect-ratio: var(--ar); overflow: hidden; border-radius: var(--radius-photo);
+  aspect-ratio: var(--ar); border-radius: var(--radius-photo);
   -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-touch-callout: none; user-select: none;
 }
-.polaroid__open picture { display: block; width: 100%; height: 100%; }
+.polaroid__open picture { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: var(--radius-photo); }
+/* E9: the whole print (frame and bottom margin included) is the tap target; positioned against .polaroid__tilt */
+.polaroid__open::after { content: ""; position: absolute; inset: calc(-1 * var(--print-pad)) calc(-1 * var(--print-pad)) calc(-1 * var(--print-pad-bottom)); }
+.polaroid__tilt { cursor: pointer; }
+.polaroid--video.is-playing:not(.is-error) .polaroid__tilt { cursor: default; }
+html:not(.js) .polaroid__tilt { cursor: default; }
 .polaroid__open img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-photo); -webkit-user-drag: none; }
 .polaroid[data-media-id="20221006"] img { object-position: 50% 62%; }
 
@@ -150,6 +155,9 @@ html:not(.js) .polaroid__open { cursor: default; }
 
 /* tape: the print that carries tape sits above its neighbours so the strip is never buried (T5) */
 .spread .polaroid.polaroid[class*="polaroid--tape-"] { z-index: 3; }
+/* I8: a focused print rises above tape and overlap layers so its focus ring is never buried */
+.spread .polaroid.polaroid:focus-within { z-index: 6; }
+.spread .polaroid.polaroid:has(:focus-visible) { z-index: 6; }
 /* tape: static strip, rotated opposite to its print, never over a face */
 .polaroid--tape-sun { --tape: var(--tape-sun); }
 .polaroid--tape-sky { --tape: var(--tape-sky); }

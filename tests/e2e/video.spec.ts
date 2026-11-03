@@ -47,7 +47,7 @@ test('only one plays', async ({ page }) => {
 test('ended resets to poster state', async ({ page }) => {
   await tap(page, 0);
   await expect.poll(() => vid(page, 0).evaluate((v: HTMLVideoElement) => !v.paused && v.readyState > 1)).toBe(true);
-  await vid(page, 0).evaluate((v: HTMLVideoElement) => { v.currentTime = v.duration - 0.1; });
+  await vid(page, 0).evaluate((v: HTMLVideoElement) => { v.muted = true; v.currentTime = v.duration - 0.1; });
   await expect(btn(page, 0)).toBeVisible({ timeout: 8000 });
   await expect.poll(() => vid(page, 0).evaluate((v: HTMLVideoElement) => v.controls)).toBe(false);
   await expect(fig(page, 0)).not.toHaveClass(/is-playing/);

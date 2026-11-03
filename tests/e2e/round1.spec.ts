@@ -310,7 +310,7 @@ test.describe('E video', () => {
     await page.evaluate(() => new Promise((r) => setTimeout(r, 900)));
     await vbtn(page, 0).click();
     await expect.poll(() => vid(page, 0).evaluate((v: HTMLVideoElement) => !v.paused && v.readyState > 1)).toBe(true);
-    await vid(page, 0).evaluate((v: HTMLVideoElement) => { v.currentTime = v.duration - 0.1; });
+    await vid(page, 0).evaluate((v: HTMLVideoElement) => { v.muted = true; v.currentTime = v.duration - 0.1; });
     await expect(vbtn(page, 0)).toBeVisible({ timeout: 8000 });
     // load() rewinds to the start (frame 0 / poster) instead of leaving the last frame
     await expect.poll(() => vid(page, 0).evaluate((v: HTMLVideoElement) => v.currentTime)).toBe(0);
