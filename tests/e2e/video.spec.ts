@@ -58,6 +58,21 @@ test('keyboard Enter plays', async ({ page }) => {
   await btn(page, 0).focus();
   await page.keyboard.press('Enter');
   await expect.poll(() => vid(page, 0).evaluate((v: HTMLVideoElement) => !v.paused)).toBe(true);
+  await expect.poll(() => vid(page, 0).evaluate((v) => document.activeElement === v)).toBe(true);
+});
+
+test('failed video shows retry disc', async ({ page }) => {
+  const src = await vid(page, 1).locator('source').getAttribute('src');
+  await page.route(`**/${src!.split('/').pop()}`, (r) => r.fulfill({ status: 404, body: 'nope' }));
+  await tap(page, 1);
+  await expect(fig(page, 1)).toHaveClass(/is-error/);
+  await expect(btn(page, 1)).toBeVisible();
+});
+
+test('straighten transition is 240ms', async ({ page }) => {
+  await page.waitForTimeout(1000);
+  await tap(page, 0);
+  expect(await fig(page, 0).locator('.polaroid__tilt').evaluate((e) => getComputedStyle(e).transitionDuration)).toBe('0.24s');
 });
 
 test('playing print straightens', async ({ page }) => {

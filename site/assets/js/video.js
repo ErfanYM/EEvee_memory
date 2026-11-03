@@ -43,6 +43,14 @@ export function initVideos(root = document) {
     let timer = 0;
     const clearBuffer = () => { clearTimeout(timer); timer = 0; f.classList.remove('is-buffering'); };
 
+    const onError = () => {
+      clearBuffer();
+      v.removeAttribute('controls');
+      f.classList.remove('is-playing');
+      f.classList.add('is-error');
+      glyph(v, RETRY_PATH);
+    };
+
     // Must call play() synchronously: iOS only grants sound inside the gesture.
     const start = () => {
       for (const o of videos) if (o !== v && !o.paused) resetToPoster(o);
@@ -50,7 +58,13 @@ export function initVideos(root = document) {
       v.setAttribute('controls', '');
       f.classList.add('is-playing');
       const p = v.play();
-      if (p && p.catch) p.catch(() => { if (v.paused && !f.classList.contains('is-error')) resetToPoster(v); });
+      // The disc is about to hide; keep keyboard focus on the (controls-bearing) video.
+      v.setAttribute('tabindex', '-1');
+      v.focus({ preventScroll: true });
+      if (p && p.catch) p.catch((e) => {
+        if (e && e.name === 'NotSupportedError') onError();
+        else if (v.paused && !f.classList.contains('is-error')) resetToPoster(v);
+      });
     };
 
     b.addEventListener('click', start);
@@ -64,13 +78,8 @@ export function initVideos(root = document) {
     v.addEventListener('waiting', () => { if (!timer && !v.paused) timer = setTimeout(() => f.classList.add('is-buffering'), BUFFER_MS); });
     for (const ev of ['playing', 'canplay', 'pause', 'seeked']) v.addEventListener(ev, clearBuffer);
     v.addEventListener('ended', () => { clearBuffer(); resetToPoster(v); });
-    v.addEventListener('error', () => {
-      clearBuffer();
-      v.removeAttribute('controls');
-      f.classList.remove('is-playing');
-      f.classList.add('is-error');
-      glyph(v, RETRY_PATH);
-    });
+    // <source> errors do not bubble, so listen in the capture phase.
+    v.addEventListener('error', onError, true);
     io?.observe(v);
   }
 }

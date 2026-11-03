@@ -153,6 +153,7 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
   transition: opacity 320ms var(--ease-out), transform 480ms var(--ease-settle); transition-delay: calc(var(--i, 0) * 60ms);
 }
 .js .polaroid.is-in.is-done .polaroid__tilt { transition: transform 220ms var(--ease-out); transition-delay: 0ms; }
+.js .polaroid.polaroid--video.is-playing .polaroid__tilt { transition: transform 240ms var(--ease-out); transition-delay: 0ms; }
 
 /* ---- spreads ---- */
 .spread { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); align-items: start; row-gap: 0;
@@ -201,7 +202,7 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
   .js .polaroid.is-in .polaroid__tilt, .js .polaroid.is-in.is-done .polaroid__tilt { transition: opacity 200ms linear; transition-delay: 0ms; }
   .polaroid:hover .polaroid__tilt, .polaroid:active .polaroid__tilt { transform: rotate(var(--tilt)); }
   .polaroid:not(.polaroid--video):active .polaroid__tilt { opacity: .85; }
-  .polaroid.polaroid--video.is-playing .polaroid__tilt { transform: rotate(var(--tilt)); transition: none; }
+  .polaroid.polaroid--video.is-playing .polaroid__tilt, .js .polaroid.polaroid--video.is-playing .polaroid__tilt { transform: rotate(var(--tilt)); transition: none; }
   .polaroid--video.is-buffering .video__play::after { animation: none; }
   .video__play { transition: none; }
   .donate { transition: background-color 150ms linear; }
