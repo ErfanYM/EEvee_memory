@@ -87,7 +87,6 @@ def video(entry):
     png.unlink()
     pim = im.resize((540, 960), Image.LANCZOS)
     pim.save(IMG / f"{pid}-poster-960.webp", "WEBP", quality=80, method=6)
-    pim.save(IMG / f"{pid}-poster-960.jpg", "JPEG", quality=82, progressive=True, optimize=True)
     return dict(id=pid, kind="video", group=entry["group"], alt=entry["alt"], width=720, height=1280,
                 sources={"mp4": f"assets/video/{pid}.mp4"},
                 poster=f"assets/img/{pid}-poster-960.webp"), pim

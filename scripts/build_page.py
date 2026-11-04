@@ -338,8 +338,8 @@ def dt_rules(hi):
         rules.append(f".spread--{sid}{{grid-template-columns:{tpl};column-gap:{gaps[kind]}px;}}")
         for it, (col, mt) in zip(items, places):
             extra = ""
-            if not hi or True:
-                extra += "margin-inline:-10%;" if (kind == "4" and it[3]) else ""
+            if kind == "4" and it[3]:
+                extra += "margin-inline:-10%;"
             if it[0] in OVERLAP:
                 extra += f"left:-{gaps[kind] + OVERLAP[it[0]]}px;"
             if hi:

@@ -14,9 +14,16 @@ function glyph(v, d) {
 }
 
 // Back to the poster state: paused, native controls off, disc showing, tilt restored.
+// The video holds focus after a tap; when it goes back to a poster the focus must not be stranded on it.
+function releaseFocus(v) {
+  if (document.activeElement === v) { btn(v)?.focus({ preventScroll: true }); }
+  v.removeAttribute('tabindex');
+}
+
 function resetToPoster(v) {
   const f = fig(v);
   v.pause();
+  releaseFocus(v);
   v.removeAttribute('controls');
   f.classList.remove('is-playing', 'is-buffering', 'is-error');
   glyph(v, PLAY_PATH);
@@ -62,6 +69,7 @@ export function initVideos(root = document) {
 
     const onError = () => {
       clearBuffer();
+      releaseFocus(v);
       v.removeAttribute('controls');
       f.classList.remove('is-playing');
       f.classList.add('is-error');

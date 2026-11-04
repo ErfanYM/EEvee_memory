@@ -106,3 +106,13 @@ test('webkit inline: no fullscreen, box stays inside figure', async ({ page, bro
   expect(v.x + v.width).toBeLessThanOrEqual(f.x + f.width + 1);
   expect(v.y + v.height).toBeLessThanOrEqual(f.y + f.height + 1);
 });
+
+test('M2: when playback ends, focus moves from the video to the play button', async ({ page }) => {
+  await fig(page, 0).scrollIntoViewIfNeeded();
+  await btn(page, 0).focus();
+  await page.keyboard.press('Enter');
+  await expect.poll(() => page.evaluate(() => document.activeElement?.tagName)).toBe('VIDEO');
+  await vid(page, 0).evaluate((v: HTMLVideoElement) => v.dispatchEvent(new Event('ended')));
+  await expect.poll(() => page.evaluate(() => document.activeElement?.classList.contains('video__play'))).toBe(true);
+  expect(await vid(page, 0).getAttribute('tabindex')).toBeNull();
+});

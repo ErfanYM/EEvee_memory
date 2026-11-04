@@ -42,6 +42,7 @@ function applySrc(pic, data, q) {
 export function initLightbox(root = document) {
   const dlg = root.querySelector('dialog.lightbox');
   if (!dlg) return;
+  if (typeof dlg.showModal !== 'function') return; // no <dialog>: leave the page alone (photos just are not clickable)
   const figs = [...root.querySelectorAll('.polaroid[data-kind="photo"]')];
   if (!figs.length) return;
   const html = root.documentElement;
@@ -82,7 +83,10 @@ export function initLightbox(root = document) {
 
   // Fit the img box to the photo's aspect ratio inside the stage's padded content box, so 960w and 1600w occupy the same box.
   function fit(i = idx) {
-    const [aw, ah] = (figs[i].style.getPropertyValue('--ar') || '1/1').split('/').map(Number);
+    // the photo's own shape (width/height attributes), not the print window's --ar, which crops 20221006
+    const pi = figs[i].querySelector('picture img');
+    const aw = Number(pi.getAttribute('width')) || 1;
+    const ah = Number(pi.getAttribute('height')) || 1;
     const cs = getComputedStyle(stage);
     const w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
@@ -147,6 +151,8 @@ export function initLightbox(root = document) {
   function rectOf(el) { return el.getBoundingClientRect(); }
 
   // Transform that places the lightbox img over the print's image (position, size, tilt).
+  // Transform (and, when the print window crops the photo, a clip-path) that places the lightbox img over the print's image.
+  // The scale is uniform (cover), so nothing stretches in flight.
   function originTransform(i) {
     const o = figs[i].querySelector('.polaroid__open img');
     const r = rectOf(o);
@@ -154,10 +160,17 @@ export function initLightbox(root = document) {
     const tilt = parseFloat(getComputedStyle(figs[i]).getPropertyValue('--tilt')) || 0;
     const ow = o.offsetWidth || r.width;
     const oh = o.offsetHeight || r.height;
+    const s = Math.max(ow / t.width, oh / t.height);
     const dx = r.left + r.width / 2 - (t.left + t.width / 2);
     const dy = r.top + r.height / 2 - (t.top + t.height / 2);
+    const pos = (getComputedStyle(o).objectPosition || '50% 50%').split(' ').map((v) => (parseFloat(v) || 50) / 100);
+    const cropX = Math.max(0, t.width - ow / s);
+    const cropY = Math.max(0, t.height - oh / s);
+    const clip = cropX < 0.5 && cropY < 0.5 ? null
+      : `inset(${cropY * pos[1]}px ${cropX * (1 - pos[0])}px ${cropY * (1 - pos[1])}px ${cropX * pos[0]}px)`;
     return {
-      transform: `translate(${dx}px, ${dy}px) rotate(${tilt}deg) scale(${ow / t.width}, ${oh / t.height})`,
+      transform: `translate(${dx}px, ${dy}px) rotate(${tilt}deg) scale(${s})`,
+      clip,
       onScreen: r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth,
     };
   }
@@ -183,8 +196,8 @@ export function initLightbox(root = document) {
       track(scrim.animate({ opacity: [0, 1] }, { duration: 120, easing: 'linear' })).onfinish = () => { scrim.style.opacity = ''; };
       track(img.animate({ opacity: [0, 1] }, { duration: 120, easing: 'linear' }));
     } else {
-      const { transform } = originTransform(i);
-      track(img.animate({ transform: [transform, 'none'] }, { duration: 280, easing: EASE_SHEET }));
+      const { transform, clip } = originTransform(i);
+      track(img.animate(clip ? { transform: [transform, 'none'], clipPath: [clip, 'inset(0px)'] } : { transform: [transform, 'none'] }, { duration: 280, easing: EASE_SHEET }));
       track(scrim.animate({ opacity: [0, 1] }, { duration: 220, easing: EASE_OUT })).onfinish = () => { scrim.style.opacity = ''; };
     }
     scrim.style.opacity = '';
@@ -225,9 +238,9 @@ export function initLightbox(root = document) {
     // Capture the dragged transform, clear it, then measure the undisplaced box so the FLIP lands on the print.
     const from = getComputedStyle(img).transform;
     img.style.transform = '';
-    const { transform, onScreen } = originTransform(idx);
+    const { transform, clip, onScreen } = originTransform(idx);
     if (onScreen) {
-      const a = track(img.animate({ transform: [from, transform] }, { duration: 220, easing: EASE_SHEET, fill: 'forwards' }));
+      const a = track(img.animate(clip ? { transform: [from, transform], clipPath: ['inset(0px)', clip] } : { transform: [from, transform] }, { duration: 220, easing: EASE_SHEET, fill: 'forwards' }));
       track(scrim.animate({ opacity: [Number.isNaN(startScrim) ? 1 : startScrim, 0] }, { duration: 220, easing: EASE_OUT, fill: 'forwards' }));
       a.onfinish = done;
     } else {
