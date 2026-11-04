@@ -218,7 +218,7 @@ hero_fig = (
 # Farewell print (DESIGN-SYSTEM section 12): hero photo once more, NOT a .polaroid / [data-media-id] / lightbox item.
 farewell_fig = (
     f'<div class="farewell" style="--ar:{hm["width"]}/{hm["height"]}">'
-    + picture(hm, "(min-width: 481px) 288px, 34vw").replace('fetchpriority="low" ', "").replace(escape(hm["alt"], quote=True), "Eevee smiling up at the camera in the snowy woods")
+    + picture(hm, "(min-width: 481px) 288px, 34vw").replace('fetchpriority="low" ', "").replace(escape(hm["alt"], quote=True), "")
     + "</div>"
 )
 

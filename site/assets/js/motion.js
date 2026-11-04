@@ -8,6 +8,7 @@ export function initReveal() {
   const prints = [...document.querySelectorAll('.polaroid')];
   const vh = window.innerHeight || root.clientHeight;
   const pending = prints.filter((el) => el.dataset.mediaId !== 'img_8819' && el.getBoundingClientRect().top >= vh);
+  initFarewell(vh);
   if (!pending.length) return;
 
   const show = (el, step = 0, instant = false) => {
@@ -43,4 +44,21 @@ export function initReveal() {
   // Failsafe (DESIGN-SYSTEM section 9, R12): only a broken observer is overridden; a working one is never timed out.
   setTimeout(() => { if (!delivered) { io.disconnect(); showAll(); } }, FAILSAFE_MS);
   window.addEventListener('beforeprint', () => { io.disconnect(); showAll(); });
+}
+
+// Closing farewell print: its own tiny reveal, kept out of the .polaroid / lightbox logic. Same failsafe idea.
+function initFarewell(vh) {
+  const el = document.querySelector('.farewell');
+  if (!el || el.getBoundingClientRect().top < vh) return;
+  const show = () => { el.classList.remove('is-pending'); el.classList.add('is-in'); };
+  el.classList.add('is-pending');
+  if (!('IntersectionObserver' in window)) { show(); return; }
+  let delivered = false;
+  const io = new IntersectionObserver((entries) => {
+    delivered = true;
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); show(); }
+  }, { threshold: 0.4 });
+  io.observe(el);
+  setTimeout(() => { if (!delivered) { io.disconnect(); show(); } }, FAILSAFE_MS);
+  window.addEventListener('beforeprint', () => { io.disconnect(); show(); });
 }

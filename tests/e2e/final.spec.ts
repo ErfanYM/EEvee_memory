@@ -75,7 +75,7 @@ test('farewell print is non-interactive and does not open the lightbox', async (
   await page.waitForTimeout(400);
   await expect(page.locator('dialog.lightbox')).not.toBeVisible();
   const img = print.locator('img');
-  await expect(img).toHaveAttribute('alt', 'Eevee smiling up at the camera in the snowy woods');
+  await expect(img).toHaveAttribute('alt', ''); // decorative: repeats the hero photo
   await expect(img).toHaveAttribute('loading', 'lazy');
   expect(await img.evaluate((e) => (e as HTMLElement).tabIndex)).toBe(-1);
 });
@@ -85,4 +85,48 @@ test('closing-0 text is unchanged and left-aligned', async ({ page }) => {
   const el = page.locator('[data-copy="closing-0"]');
   expect((await el.textContent())!.replace(/\s+/g, ' ').trim()).toBe(copyFixture.closing[0]);
   expect(['left', 'start']).toContain(await el.evaluate((e) => getComputedStyle(e).textAlign));
+});
+
+test('farewell grid at 360 gives the text a wider column', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto('/');
+  const cols = await page.locator('.closing').evaluate((e) => getComputedStyle(e).gridTemplateColumns.split(' ').map(parseFloat));
+  const w = await page.locator('.closing').evaluate((e) => e.clientWidth - 2 * parseFloat(getComputedStyle(e).paddingLeft));
+  expect(cols[0] / (cols[0] + cols[1])).toBeLessThan(0.4);
+  expect(cols[0]).toBeGreaterThanOrEqual(111);
+  expect(w).toBeGreaterThan(0);
+});
+
+test('farewell print is at most 80vh tall in landscape phones', async ({ page }) => {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.goto('/');
+  await page.locator('.farewell').scrollIntoViewIfNeeded();
+  const h = await page.locator('.farewell picture').evaluate((e) => (e as HTMLElement).offsetHeight);
+  expect(h).toBeLessThanOrEqual(390 * 0.8 + 1);
+});
+
+test('farewell settles to rest after scroll; copy stays static', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto('/');
+  const f = page.locator('.farewell');
+  await expect(f).toHaveClass(/is-pending/);
+  await page.locator('[data-copy="closing-0"]').scrollIntoViewIfNeeded();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(f).toHaveClass(/is-in/);
+  await page.waitForTimeout(1000);
+  const r = await f.locator('picture').evaluate((e) => ({ o: getComputedStyle(e).opacity, t: getComputedStyle(e).transform }));
+  expect(r.o).toBe('1');
+  const m = r.t.match(/matrix\(([^)]+)\)/)!; const [a, b] = m[1].split(',').map(parseFloat);
+  expect(Math.abs(Math.atan2(b, a) * 180 / Math.PI + 2)).toBeLessThan(0.1);
+  expect(await page.locator('[data-copy="closing-0"]').evaluate((e) => getComputedStyle(e).transitionDuration)).toBe('0s');
+  await expect(f.locator('.is-pending, [data-media-id]')).toHaveCount(0);
+});
+
+test('farewell is static under reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto('/');
+  const t = await page.locator('.farewell picture').evaluate((e) => getComputedStyle(e).transform);
+  const m = t.match(/matrix\(([^)]+)\)/)!; const [a, b] = m[1].split(',').map(parseFloat);
+  expect(Math.abs(Math.atan2(b, a) * 180 / Math.PI + 2)).toBeLessThan(0.1);
 });

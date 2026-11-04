@@ -27,7 +27,8 @@ test('image loading attributes and alt', async ({ page }) => {
     })));
   expect(imgs).toHaveLength(21); // 20 gallery imgs + the non-interactive closing farewell print (DESIGN-SYSTEM s12)
   for (const i of imgs) {
-    expect(i.alt && i.alt.trim().length).toBeGreaterThan(0);
+    if (i.id === undefined) expect(i.alt).toBe(''); // closing farewell print repeats the hero: decorative
+    else expect(i.alt && i.alt.trim().length).toBeGreaterThan(0);
     expect(i.w).toBeTruthy();
     expect(i.h).toBeTruthy();
     if (i.id === 'img_8819') expect(i.loading).not.toBe('lazy');

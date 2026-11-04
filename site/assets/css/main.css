@@ -241,15 +241,28 @@ html:not(.js) .polaroid__open { cursor: default; }
 .field--closing { padding-bottom: 160px; }
 /* section 12: farewell print left, text right, side by side at every width */
 .closing { display: grid; grid-template-columns: minmax(120px, 40%) minmax(0, 1fr); column-gap: 16px; align-items: center; }
-.closing .copy { margin: 0; max-width: none; text-align: left; font-size: var(--step-body); line-height: 1.5; font-weight: 500; }
+.closing .copy { margin: 0; padding-bottom: 20px; max-width: none; text-align: left; font-size: var(--step-body); line-height: 1.5; font-weight: 500; text-wrap: pretty; }
 .farewell { pointer-events: none; user-select: none; min-width: 0; }
 .farewell picture { display: block; box-sizing: border-box; background: var(--card); border-radius: var(--radius-print); box-shadow: var(--print-edge);
-  padding: 7px 7px 24px; transform: rotate(-2deg); aspect-ratio: auto; }
+  padding: 7px 7px 24px; transform: rotate(-2deg); }
 .farewell img { display: block; width: 100%; height: auto; aspect-ratio: var(--ar); object-fit: cover; border-radius: var(--radius-photo); }
+@media (max-width: 360px) { .closing { grid-template-columns: minmax(112px, 36%) minmax(0, 1fr); } }
 @media (min-width: 481px) {
-  .closing { grid-template-columns: minmax(200px, 320px) minmax(0, 30ch); justify-content: center; column-gap: clamp(24px, 4vw, 56px); }
-  .closing .copy { font-size: var(--step-lead); line-height: 1.4; }
+  .closing { grid-template-columns: minmax(160px, 38%) minmax(0, 30ch); justify-content: center; column-gap: clamp(24px, 4vw, 56px); }
+  .closing .copy { font-size: var(--step-lead); line-height: 1.4; padding-bottom: 48px; }
   .farewell picture { padding: 16px 16px 56px; }
+}
+@media (min-width: 1024px) { .closing { grid-template-columns: minmax(200px, 320px) minmax(0, 30ch); } }
+/* landscape phones: keep the whole print (frame included) within 80vh */
+@media (orientation: landscape) and (max-height: 500px) {
+  .farewell { width: 100%; max-width: calc((80vh - 72px) * 0.75 + 32px); }
+}
+/* settle (same family as .polaroid); the copy never animates */
+.js .farewell.is-pending picture { opacity: 0; transform: translateY(16px) rotate(-5deg); transition: none; }
+.js .farewell.is-in picture { opacity: 1; transform: rotate(-2deg); transition: opacity 420ms var(--ease-out) 120ms, transform 560ms var(--ease-settle) 120ms; }
+@media (prefers-reduced-motion: reduce) {
+  .js .farewell.is-pending picture { transform: rotate(-2deg); }
+  .js .farewell.is-in picture { transition: opacity 200ms linear 0ms; }
 }
 
 /* ---- reduced motion: static tilts stay; reveal is a 200ms opacity fade ---- */
