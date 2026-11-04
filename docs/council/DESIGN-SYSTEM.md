@@ -178,3 +178,13 @@ Hero `<img>`: `loading="eager" fetchpriority="high"`. Every other img gets `load
 - One stylesheet: spread placements are generated into the marked block at the end of `main.css`.
 - Hero: WebP-only `<picture>` with a matching `<link rel=preload as=image>`, extra 560w tier, no `decoding` hint. Below-the-fold pictures keep their URLs in `data-*` and `lazy.js` releases them (on-screen prints at once, the rest after `load`). Video posters load the same way.
 - Lightbox opens from the origin print's `currentSrc`, then upgrades to 960w and 1600w after decode.
+
+## 12. Closing farewell print (owner request, 2026-11-04)
+The owner asked for Eevee's hero photo (`img_8819`) to appear **once more** in the closing field: a "last picture of Eevee" when people finish reading. This is a deliberate, owner-approved exception to "each media exactly once".
+- Layout: two columns **at every width, phone included**. Print on the **left**, closing-0 text on the **right**, both vertically centred. No stacking.
+  - ≤480: grid `minmax(120px, 40%) 1fr`, gap 16px. The text uses `--step-body` so it fits beside the print. Print padding is 7px/24px (smaller frame).
+  - ≥481: grid `minmax(200px, 320px) minmax(0, 30ch)`, centred in the wrap, gap clamp(24px, 4vw, 56px). The text uses `--step-lead`.
+- closing-0 becomes **left-aligned** (it was centred), because a centred block beside an image reads as floating.
+- The print uses the same polaroid treatment (white frame, `--print-edge`, tilt −2°, no tape). It is **not interactive**: no lightbox button, no hover lift, no `data-media-id`. It is a farewell, not another gallery item. It uses a plain `<picture>` with the existing `img_8819` sources, `loading="lazy"`, the same `sizes` logic, and alt text "Eevee smiling up at the camera in the snowy woods".
+- The settle reveal applies like any print. With reduced motion it is static.
+- Chapter padding below stays 160px. Nothing comes after it.
