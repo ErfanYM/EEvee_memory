@@ -215,6 +215,13 @@ hero_fig = (
     + "</button></div></figure>"
 )
 
+# Farewell print (DESIGN-SYSTEM section 12): hero photo once more, NOT a .polaroid / [data-media-id] / lightbox item.
+farewell_fig = (
+    f'<div class="farewell" style="--ar:{hm["width"]}/{hm["height"]}">'
+    + picture(hm, "(min-width: 481px) 288px, 34vw").replace('fetchpriority="low" ', "").replace(escape(hm["alt"], quote=True), "Eevee smiling up at the camera in the snowy woods")
+    + "</div>"
+)
+
 S = {sid: spread(sid, items) for sid, items in SPREADS}
 
 html = f"""<!doctype html>
@@ -298,7 +305,8 @@ html = f"""<!doctype html>
   </section>
 
   <section class="field field--sky field--closing">
-    <div class="wrap">
+    <div class="wrap closing">
+      {farewell_fig}
       {p("closing-0", True)}
     </div>
   </section>

@@ -25,7 +25,7 @@ test('image loading attributes and alt', async ({ page }) => {
       w: e.getAttribute('width'),
       h: e.getAttribute('height'),
     })));
-  expect(imgs).toHaveLength(20);
+  expect(imgs).toHaveLength(21); // 20 gallery imgs + the non-interactive closing farewell print (DESIGN-SYSTEM s12)
   for (const i of imgs) {
     expect(i.alt && i.alt.trim().length).toBeGreaterThan(0);
     expect(i.w).toBeTruthy();
