@@ -86,7 +86,7 @@ export function initVideos(root = document) {
 
     // E9: a click anywhere on the print (disc, poster or white frame) starts playback, via the same synchronous start().
     // Once playback has begun the controls attribute is set, so the frame never intercepts the native controls.
-    fig(v).addEventListener('click', () => { if (!v.hasAttribute('controls')) start(); });
+    fig(v).addEventListener('click', (e) => { if (e.target.closest('.polaroid__tilt') && !v.hasAttribute('controls')) start(); });
 
     v.addEventListener('play', () => {
       for (const o of videos) if (o !== v && !o.paused) resetToPoster(o);

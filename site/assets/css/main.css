@@ -113,8 +113,10 @@ h2 { font-size: var(--step-h2); font-weight: 600; line-height: 1.05; letter-spac
 }
 .polaroid__open picture { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: var(--radius-photo); }
 /* E9: the whole print (frame and bottom margin included) is the tap target; positioned against .polaroid__tilt */
-.polaroid__open::after { content: ""; position: absolute; inset: calc(-1 * var(--print-pad)) calc(-1 * var(--print-pad)) calc(-1 * var(--print-pad-bottom)); }
-.polaroid__tilt { cursor: pointer; }
+.polaroid__open::after { content: ""; position: absolute; inset: 0; } /* .polaroid__tilt is the containing block and already spans the whole frame */
+/* only the visible (tilted) card takes hits: the untilted figure box pokes out past its corners */
+.polaroid { pointer-events: none; }
+.polaroid__tilt { pointer-events: auto; cursor: pointer; }
 .polaroid--video.is-playing:not(.is-error) .polaroid__tilt { cursor: default; }
 html:not(.js) .polaroid__tilt { cursor: default; }
 .polaroid__open img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-photo); -webkit-user-drag: none; }
