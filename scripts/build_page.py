@@ -13,7 +13,7 @@ SITE = ROOT / "site"
 media = {m["id"]: m for m in json.loads((SITE / "assets/media.json").read_text())}
 copy = json.loads((ROOT / "tests/fixtures/copy.json").read_text())
 
-DONATE = "https://torontohumanesociety.donorsupport.co/page/InMemory"
+DONATE = "https://torontohumanesociety.donorsupport.co/page/InMemory?tributeHonoree=Eevee"
 DOMAIN = "torontohumanesociety.donorsupport.co"
 LABEL = "Make a donation in Eevee’s memory"
 SITE_URL = "https://erfanym.github.io/EEvee_memory/"
@@ -309,6 +309,10 @@ html = f"""<!doctype html>
       {farewell_fig}
       {p("closing-0", True)}
     </div>
+    <footer class="wrap signoff">
+      <p class="signoff__line">With love,</p>
+      <p class="signoff__name">The Li Family ❤️</p>
+    </footer>
   </section>
 </main>
 <dialog class="lightbox" aria-label="Photo">

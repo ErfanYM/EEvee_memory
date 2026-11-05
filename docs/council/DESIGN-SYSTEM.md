@@ -188,3 +188,10 @@ The owner asked for Eevee's hero photo (`img_8819`) to appear **once more** in t
 - The print uses the same polaroid treatment (white frame, `--print-edge`, tilt −2°, no tape). It is **not interactive**: no lightbox button, no hover lift, no `data-media-id`. It is a farewell, not another gallery item. It uses a plain `<picture>` with the existing `img_8819` sources, `loading="lazy"`, the same `sizes` logic, and alt text "Eevee smiling up at the camera in the snowy woods".
 - The settle reveal applies like any print. With reduced motion it is static.
 - Chapter padding below stays 160px. Nothing comes after it.
+
+## 13. Sign-off credit and dedication pre-fill (owner request, 2026-11-05)
+- **Copy change:** the owner changed four sentences to end with "!": meet-0 "…happy to be around us!", meet-2 "…whatever we were doing!", meet-3 "…happiness she brought us!" and memory-1 "…if you let me know!". `tests/fixtures/copy.json` and spec §4 are the source of truth.
+- **Sign-off:** a `<footer class="signoff">` inside the closing sky field, after the farewell grid, centred.
+  - It has two lines, `With love,` (`--step-body`, 500, `--ink-soft`) and `The Li Family ❤️` (clamp 1.75–2.75rem, 600, `--ink`). The top margin is clamp(72px, 11vw, 128px), and the 160px field padding after it remains.
+  - No rules, no ornaments and no animation. The type scale and the space around it make it the end credit.
+- **Donate link:** it now points to `…/page/InMemory?tributeHonoree=Eevee`. FundraiseUp's URL API pre-fills the "Dedicate this donation" box with "Eevee", as verified on the live page on 2026-11-05. The visible domain line is unchanged.

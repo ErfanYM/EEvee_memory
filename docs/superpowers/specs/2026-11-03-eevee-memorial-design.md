@@ -54,27 +54,31 @@ Every character below is used exactly as written, including curly apostrophes (�
 
 ### Section 1 — heading: `Meet Eevee`
 
-> Eevee was the sweetest girl who brought us 12 years of happiness. She was loving, loyal and incredibly friendly with people. She absolutely loved human company and was always happy to be around us.
+> Eevee was the sweetest girl who brought us 12 years of happiness. She was loving, loyal and incredibly friendly with people. She absolutely loved human company and was always happy to be around us!
 
 > She was also a big foodie, just like her mama! Chicken and bread were definitely among her favourites. She enjoyed her morning walks with grandma, going for hikes, swimming and joining us on little adventures.
 
-> One of the things we loved most about Eevee was how she was always up for anything. It didn’t matter where we were going or whether she knew the destination. She was always excited and ready to come along. She was happy just being part of whatever we were doing.
+> One of the things we loved most about Eevee was how she was always up for anything. It didn’t matter where we were going or whether she knew the destination. She was always excited and ready to come along. She was happy just being part of whatever we were doing!
 
-> We feel incredibly lucky to have had Eevee in our lives. We will always remember her loving nature, her enthusiasm for life and all the happiness she brought us.
+> We feel incredibly lucky to have had Eevee in our lives. We will always remember her loving nature, her enthusiasm for life and all the happiness she brought us!
 
 ### Section 2 — heading: `In Loving Memory of Eevee`
 
 > In memory of Eevee, we’ve chosen to support Toronto Humane Society and its work helping animals in need.
 
-> If you’d like to make a donation in Eevee’s memory, you can do so through the link below. If you do decide to donate, I’d really appreciate it if you let me know.
+> If you’d like to make a donation in Eevee’s memory, you can do so through the link below. If you do decide to donate, I’d really appreciate it if you let me know!
 
 > Of course, there’s absolutely no pressure to donate. Taking a moment to remember Eevee, look through her photos or share a favourite memory of her would mean just as much to me.
 
-Donation link: `https://torontohumanesociety.donorsupport.co/page/InMemory`
+Donation link: `https://torontohumanesociety.donorsupport.co/page/InMemory?tributeHonoree=Eevee` (FundraiseUp URL API: pre-fills the "Dedicate this donation" box with "Eevee"; owner request 2026-11-05)
 
 ### Section 3 — closing (no heading)
 
 > Thank you for remembering Eevee. We hope you’ll think of her with a smile. She will forever be a part of our family and always hold a special place in our hearts.
+
+### Sign-off (owner-supplied, 2026-11-05)
+
+At the very end of the page: `With love,` / `The Li Family ❤️`
 
 ### Words the page needs that the family didn't write (Opus's calls, kept to a minimum)
 - **Donate button label:** `Make a donation in Eevee’s memory`, taken from her own sentence. Below the button, show the plain domain `torontohumanesociety.donorsupport.co` in small text so people can see where it goes. The link opens in a new tab with `rel="noopener"`.
