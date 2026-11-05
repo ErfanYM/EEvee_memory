@@ -238,10 +238,10 @@ html:not(.js) .polaroid__open { cursor: default; }
 .field--donate .domain + .copy { margin-top: clamp(32px, 5vw, 56px); }
 
 /* ---- sign-off (owner request 2026-11-05): a quiet end credit under the farewell ---- */
-.signoff { text-align: center; margin-top: clamp(72px, 11vw, 128px); }
+.signoff { text-align: center; margin-top: clamp(48px, 7vw, 80px); }
 .signoff p { margin: 0; max-width: none; }
-.signoff__line { font-size: var(--step-body); font-weight: 500; line-height: 1.4; color: var(--ink-soft); }
-.signoff__name { margin-top: 0.3em; font-size: clamp(1.75rem, 1.25rem + 2.2vw, 2.75rem); font-weight: 600; line-height: 1.1; letter-spacing: -0.015em; color: var(--ink); text-wrap: balance; }
+.signoff__line { font-size: var(--step-small); font-weight: 500; line-height: 1.4; color: var(--ink-soft); }
+.signoff__name { margin-top: 0.15em; font-size: var(--step-body); font-weight: 500; line-height: 1.4; letter-spacing: normal; color: var(--ink-soft); text-wrap: balance; }
 /* ---- closing ---- */
 .field--closing { padding-bottom: 160px; }
 /* section 12: farewell print left, text right, side by side at every width */
