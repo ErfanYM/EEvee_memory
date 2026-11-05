@@ -54,7 +54,7 @@ Every character below is used exactly as written, including curly apostrophes (�
 
 ### Section 1 — heading: `Meet Eevee`
 
-> Eevee was the sweetest girl who brought us 12 years of happiness. She was loving, loyal and incredibly friendly with people. She absolutely loved human company and was always happy to be around us!
+> Eevee was the sweetest girl who brought us 12 years of happiness 💛. She was loving, loyal and incredibly friendly with people. She absolutely loved human company and was always happy to be around us!
 
 > She was also a big foodie, just like her mama! Chicken and bread were definitely among her favourites. She enjoyed her morning walks with grandma, going for hikes, swimming and joining us on little adventures.
 
@@ -78,7 +78,7 @@ Donation link: `https://torontohumanesociety.donorsupport.co/page/InMemory?tribu
 
 ### Sign-off (owner-supplied, 2026-11-05)
 
-At the very end of the page: `With love,` / `The Li Family ❤️`
+At the very end of the page: `With love,` / `The Li Family 💛`
 
 ### Words the page needs that the family didn't write (Opus's calls, kept to a minimum)
 - **Donate button label:** `Make a donation in Eevee’s memory`, taken from her own sentence. Below the button, show the plain domain `torontohumanesociety.donorsupport.co` in small text so people can see where it goes. The link opens in a new tab with `rel="noopener"`.

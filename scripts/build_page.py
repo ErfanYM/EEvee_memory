@@ -311,7 +311,7 @@ html = f"""<!doctype html>
     </div>
     <footer class="wrap signoff">
       <p class="signoff__line">With love,</p>
-      <p class="signoff__name">The Li Family ❤️</p>
+      <p class="signoff__name">The Li Family 💛</p>
     </footer>
   </section>
 </main>

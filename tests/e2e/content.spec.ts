@@ -4,7 +4,7 @@ import copy from '../fixtures/copy.json';
 const DONATE = 'https://torontohumanesociety.donorsupport.co/page/InMemory?tributeHonoree=Eevee';
 const DOMAIN = 'torontohumanesociety.donorsupport.co';
 const LABEL = 'Make a donation in Eevee’s memory';
-const SIGNOFF = ['With love,', 'The Li Family ❤️'];
+const SIGNOFF = ['With love,', 'The Li Family 💛'];
 const norm = (s: string) => s.replace(/\s+/g, ' ').trim();
 
 test.beforeEach(async ({ page }) => { await page.goto('/'); });
